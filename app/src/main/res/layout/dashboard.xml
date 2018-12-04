@@ -29,10 +29,10 @@
             android:layout_marginStart="80dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="80dp"
-            app:cardBackgroundColor="@color/colorAccent"
+            app:cardBackgroundColor="@android:color/background_light"
             app:cardCornerRadius="10dp"
             app:cardElevation="10dp"
-            app:contentPadding="10dp" >
+            app:contentPadding="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,6 +43,7 @@
                     android:id="@+id/current_price_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="Current Price"
                     android:textAlignment="center"
                     android:textSize="24sp"
@@ -54,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:text="5.5"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="54sp"
                     android:textStyle="bold" />
 
@@ -69,17 +71,19 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            android:id="@+id/farmer_count_card"
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="80dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="80dp"
             android:layout_marginBottom="214dp"
-            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardBackgroundColor="@android:color/background_light"
             app:cardCornerRadius="10dp"
             app:cardElevation="10dp"
-            app:contentPadding="10dp" >
+            app:contentPadding="10dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -89,6 +93,7 @@
                     android:id="@+id/total_farmers_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="Total Farmers"
                     android:textAlignment="center"
                     android:textSize="24sp"
@@ -100,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:text="17"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="54sp"
                     android:textStyle="bold" />
 
@@ -115,17 +121,18 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            android:id="@+id/produce_count_card"
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="80dp"
-            android:layout_marginTop="-200dp"
+            android:layout_marginTop="-190dp"
             android:layout_marginEnd="80dp"
             android:layout_marginBottom="214dp"
-            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardBackgroundColor="@android:color/background_light"
             app:cardCornerRadius="10dp"
             app:cardElevation="10dp"
-            app:contentPadding="10dp" >
+            app:contentPadding="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -136,6 +143,7 @@
                     android:id="@+id/total_produce_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="Total Weight"
                     android:textAlignment="center"
                     android:textSize="24sp"
@@ -147,6 +155,7 @@
                     android:layout_height="wrap_content"
                     android:text="54"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="54sp"
                     android:textStyle="bold" />
 
