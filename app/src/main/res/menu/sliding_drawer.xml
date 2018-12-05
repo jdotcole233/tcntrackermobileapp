@@ -3,17 +3,21 @@
      <group android:checkableBehavior="single">
          <item
              android:id="@+id/drawer_home"
+             android:icon="@drawable/ic_dashboard_black_24dp"
              android:title="@string/drawer_title"
              />
-         <item
-             android:id="@+id/create_farmer_sale"
-             android:title="@string/create_farmer_profile"
-             />
          <item android:id="@+id/create_farmer"
+             android:icon="@drawable/ic_person_add_black_24dp"
              android:title="@string/create_farmer"
              />
          <item
+             android:id="@+id/create_farmer_sale"
+             android:icon="@drawable/ic_account"
+             android:title="@string/create_farmer_profile"
+             />
+         <item
              android:id="@+id/logout"
+             android:icon="@drawable/ic_close_black_24dp"
              android:title="@string/logout"
              />
 

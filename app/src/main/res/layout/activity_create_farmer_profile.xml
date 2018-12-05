@@ -17,8 +17,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+            android:background="@color/design_default_color_primary"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:title="Register Farmer"
+            app:titleMarginStart="110dp"
+            app:titleTextColor="@android:color/background_light" />
 
         <EditText
             android:id="@+id/editText3"
@@ -119,6 +122,9 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/design_default_color_primary_dark"
+        app:itemIconTint="@android:color/background_light"
+        app:itemTextColor="@android:color/background_light"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/slider_header"
         app:menu="@menu/sliding_drawer" />

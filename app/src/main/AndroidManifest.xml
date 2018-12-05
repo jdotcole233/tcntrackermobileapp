@@ -9,15 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".FarmerProfiles">
+        <activity android:name=".Dashboard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <activity android:name=".CreateFarmerProfilee"></activity> -->
-        <!--<activity android:name=".FarmerProfiles"></activity>-->
+         <activity android:name=".CreateFarmerProfile"></activity>
+        <activity android:name=".FarmerProfiles"></activity>
     </application>
 
 </manifest>

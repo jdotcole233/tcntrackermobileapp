@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Tcn Tracker</string>
     <string name="drawer_title">Dashboard</string>
-    <string name="create_farmer_profile">Create Farmer</string>
-    <string name="create_farmer">Farmer profile</string>
+    <string name="create_farmer_profile">Farmers profile</string>
+    <string name="create_farmer">Create Farmer</string>
     <string name="logout">Logout</string>
 </resources>
