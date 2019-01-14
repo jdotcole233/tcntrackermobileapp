@@ -10,7 +10,9 @@
         android:id="@+id/drawer_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/dashboardbackground"
+        >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -18,9 +20,15 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/design_default_color_primary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:title="Dashboard"
             app:titleMarginStart="130dp"
-            app:titleTextColor="@android:color/background_light" />
+            app:titleTextColor="@android:color/background_light" >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="center"
+                android:src="@drawable/tcntrackerpng"
+                />
+        </android.support.v7.widget.Toolbar>
 
       <LinearLayout
           android:id="@+id/widgetdisplay"
@@ -51,15 +59,35 @@
                   android:layout_height="210dp"
                   android:orientation="vertical">
 
-                  <TextView
-                      android:id="@+id/current_price_text"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginTop="10dp"
-                      android:text="Current Price"
-                      android:textAlignment="center"
-                      android:textSize="24sp"
-                      android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/current_price_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Current price"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:textSize="19sp"
+                            android:textFontWeight="bold"
+                             />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/current_price_image"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_insert_chart_black_24dp"
+                            />
+
+                    </LinearLayout>
+
 
                   <TextView
                       android:id="@+id/actual_price"
@@ -67,7 +95,7 @@
                       android:layout_height="wrap_content"
                       android:text="5.5"
                       android:textAlignment="center"
-                      android:textColor="@color/colorPrimary"
+                      android:textColor="#32325d"
                       android:textSize="54sp"
                       android:textStyle="bold" />
 
@@ -77,8 +105,8 @@
                       android:layout_height="wrap_content"
                       android:text="GHS/KILO"
                       android:textAlignment="center"
-                      android:textSize="24sp"
-                      android:textStyle="bold" />
+                      android:textSize="17sp"
+                      />
               </LinearLayout>
           </android.support.v7.widget.CardView>
 
@@ -99,16 +127,33 @@
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:orientation="vertical">
-
-                  <TextView
-                      android:id="@+id/total_farmers_text"
-                      android:layout_width="match_parent"
+                  <LinearLayout
+                      android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:layout_marginTop="10dp"
-                      android:text="Total Farmers"
-                      android:textAlignment="center"
-                      android:textSize="24sp"
-                      android:textStyle="bold" />
+                      android:orientation="horizontal">
+                      <TextView
+                          android:id="@+id/total_farmers_text"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:text="Total farmers"
+                          android:textAlignment="center"
+                          android:textSize="19sp"
+                          />
+
+                      <View
+                          android:layout_width="0dp"
+                          android:layout_height="0dp"
+                          android:layout_weight="1" />
+
+                      <ImageView
+                          android:id="@+id/total_farmers_image"
+                          android:layout_width="30dp"
+                          android:layout_height="30dp"
+                          android:src="@drawable/ic_people_black_24dp"
+                          />
+
+                  </LinearLayout>
+
 
                   <TextView
                       android:id="@+id/total_farmers_count"
@@ -116,7 +161,7 @@
                       android:layout_height="wrap_content"
                       android:text="17"
                       android:textAlignment="center"
-                      android:textColor="@color/colorPrimary"
+                      android:textColor="#32325d"
                       android:textSize="54sp"
                       android:textStyle="bold" />
 
@@ -163,15 +208,33 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/total_produce_text"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Total Weight"
-                        android:textAlignment="center"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/total_produce_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Total weight"
+                            android:textAlignment="center"
+                            android:textSize="19sp"
+                             />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/total_produce_image"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_pie_chart_black_24dp"
+                            />
+
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/total_produce_count"
@@ -179,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:text="54"
                         android:textAlignment="center"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="#32325d"
                         android:textSize="54sp"
                         android:textStyle="bold" />
 
@@ -213,16 +276,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/total_produce_text1"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Total Weight"
-                        android:textAlignment="center"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/total_produce_text1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Average price"
+                            android:textAlignment="center"
+                            android:textSize="19sp"
+                             />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/total_produce1_image"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_bubble_chart_black_24dp"
+                            />
+
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/total_produce_count1"
@@ -230,7 +310,7 @@
                         android:layout_height="wrap_content"
                         android:text="54"
                         android:textAlignment="center"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="#32325d"
                         android:textSize="54sp"
                         android:textStyle="bold" />
 
@@ -253,7 +333,7 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/dashboard_navigation"
-        android:layout_width="300dp"
+        android:layout_width="230dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/design_default_color_primary_dark"
