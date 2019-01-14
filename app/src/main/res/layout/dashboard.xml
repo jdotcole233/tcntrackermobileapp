@@ -22,156 +22,232 @@
             app:titleMarginStart="130dp"
             app:titleTextColor="@android:color/background_light" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/current_price"
+      <LinearLayout
+          android:id="@+id/widgetdisplay"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:clipToPadding="false"
+          android:gravity="center"
+          android:layout_marginTop="50dp"
+          android:padding="15dp"
+          >
+          <android.support.v7.widget.CardView
+              android:id="@+id/current_price"
+              android:layout_width="180dp"
+              android:layout_height="180dp"
+              android:layout_rowWeight="1"
+              android:layout_columnWeight="1"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_marginBottom="16dp"
+              app:cardBackgroundColor="@android:color/background_light"
+              app:cardCornerRadius="10dp"
+              app:cardElevation="8dp"
+              app:contentPadding="10dp">
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="210dp"
+                  android:orientation="vertical">
+
+                  <TextView
+                      android:id="@+id/current_price_text"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="10dp"
+                      android:text="Current Price"
+                      android:textAlignment="center"
+                      android:textSize="24sp"
+                      android:textStyle="bold" />
+
+                  <TextView
+                      android:id="@+id/actual_price"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="5.5"
+                      android:textAlignment="center"
+                      android:textColor="@color/colorPrimary"
+                      android:textSize="54sp"
+                      android:textStyle="bold" />
+
+                  <TextView
+                      android:id="@+id/current_price_currency"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="GHS/KILO"
+                      android:textAlignment="center"
+                      android:textSize="24sp"
+                      android:textStyle="bold" />
+              </LinearLayout>
+          </android.support.v7.widget.CardView>
+
+          <android.support.v7.widget.CardView
+              android:id="@+id/farmer_count_card"
+              android:layout_width="180dp"
+              android:layout_height="180dp"
+              android:layout_columnWeight="1"
+              android:layout_rowWeight="1"
+              android:layout_marginBottom="16dp"
+              android:layout_marginLeft="10dp"
+              app:cardBackgroundColor="@android:color/background_light"
+              app:cardCornerRadius="10dp"
+              app:cardElevation="8dp"
+              app:contentPadding="10dp">
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+
+                  <TextView
+                      android:id="@+id/total_farmers_text"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="10dp"
+                      android:text="Total Farmers"
+                      android:textAlignment="center"
+                      android:textSize="24sp"
+                      android:textStyle="bold" />
+
+                  <TextView
+                      android:id="@+id/total_farmers_count"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="17"
+                      android:textAlignment="center"
+                      android:textColor="@color/colorPrimary"
+                      android:textSize="54sp"
+                      android:textStyle="bold" />
+
+                  <TextView
+                      android:id="@+id/total_farmers_transparent"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text=""
+                      android:textAlignment="center"
+                      android:textSize="24sp"
+                      android:textStyle="bold" />
+              </LinearLayout>
+          </android.support.v7.widget.CardView>
+
+      </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/widgetdisplaysecond"
             android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="80dp"
-            app:cardBackgroundColor="@android:color/background_light"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="10dp"
-            app:contentPadding="10dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:padding="15dp"
+            android:layout_marginTop="-10dp"
+            >
+            <android.support.v7.widget.CardView
+                android:id="@+id/produce_count_card"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="@android:color/background_light"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp"
+                app:contentPadding="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/current_price_text"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Current Price"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/actual_price"
+                    <TextView
+                        android:id="@+id/total_produce_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Total Weight"
+                        android:textAlignment="center"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/total_produce_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="54"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="54sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/total_produce_trans"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/produce_count_card1"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="10dp"
+                app:cardBackgroundColor="@android:color/background_light"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp"
+                app:contentPadding="10dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="5.5"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="54sp"
-                    android:textStyle="bold" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/current_price_currency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="GHS/KILO"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                    <TextView
+                        android:id="@+id/total_produce_text1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Total Weight"
+                        android:textAlignment="center"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/farmer_count_card"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="214dp"
-            app:cardBackgroundColor="@android:color/background_light"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="10dp"
-            app:contentPadding="10dp">
+                    <TextView
+                        android:id="@+id/total_produce_count1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="54"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="54sp"
+                        android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/total_produce_trans1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/total_farmers_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Total Farmers"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+            </android.support.v7.widget.CardView>
 
-                <TextView
-                    android:id="@+id/total_farmers_count"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="17"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="54sp"
-                    android:textStyle="bold" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/total_farmers_transparent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/produce_count_card"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="-190dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="214dp"
-            app:cardBackgroundColor="@android:color/background_light"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="10dp"
-            app:contentPadding="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/total_produce_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Total Weight"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/total_produce_count"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="54"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="54sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/total_produce_trans"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
 
     </LinearLayout>
 
