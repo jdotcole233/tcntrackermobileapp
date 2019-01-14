@@ -4,4 +4,25 @@
     <string name="create_farmer_profile">Farmers profile</string>
     <string name="create_farmer">Create Farmer</string>
     <string name="logout">Logout</string>
+
+
+
+    <string-array name="gender" >
+        <item>Select Gender</item>
+        <item> Male</item>
+        <item> Female </item>
+    </string-array>
+
+
+    <!--Temporary location list // fetch dynamic location from database based on the
+      area of operation by company
+    -->
+
+    <string-array name="location" >
+        <item>Select location</item>
+        <item>Techiman</item>
+        <item>Drobo</item>
+        <item>Obuasi</item>
+        <item>Wenchi</item>
+    </string-array>
 </resources>

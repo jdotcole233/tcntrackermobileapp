@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="#f7fafc"
         >
 
         <android.support.v7.widget.Toolbar
@@ -21,7 +22,16 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:title="Register Farmer"
             app:titleMarginStart="110dp"
-            app:titleTextColor="@android:color/background_light" />
+            app:titleTextColor="@android:color/background_light">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tcntrackerpng"
+                android:foregroundGravity="center"
+                />
+
+        </android.support.v7.widget.Toolbar>
 
         <EditText
             android:id="@+id/editText3"
@@ -30,9 +40,13 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
-            android:background="@android:color/darker_gray"
             android:ems="10"
             android:hint="First Name"
+            android:background="@drawable/forminputbackground"
+            android:elevation="2dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_person_black_24dp"
+            android:drawablePadding="15dp"
             android:inputType="textPersonName"
             android:padding="20dp" />
 
@@ -43,9 +57,13 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:background="@android:color/darker_gray"
             android:ems="10"
             android:hint="Other Name"
+            android:background="@drawable/forminputbackground"
+            android:elevation="2dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_person_black_24dp"
+            android:drawablePadding="15dp"
             android:inputType="textPersonName"
             android:padding="20dp" />
 
@@ -56,22 +74,30 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:background="@android:color/darker_gray"
             android:ems="10"
             android:hint="Last Name"
+            android:background="@drawable/forminputbackground"
+            android:elevation="2dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_person_black_24dp"
+            android:drawablePadding="15dp"
             android:inputType="textPersonName"
             android:padding="20dp" />
 
-        <EditText
-            android:id="@+id/editText6"
+        <Spinner
+            android:id="@+id/genderspinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:background="@android:color/darker_gray"
             android:ems="10"
             android:hint="Gender"
+            android:background="@drawable/forminputbackground"
+            android:elevation="2dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_lock_black_24dp"
+            android:drawablePadding="15dp"
             android:inputType="textPersonName"
             android:padding="20dp" />
 
@@ -82,24 +108,33 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:background="@android:color/darker_gray"
             android:ems="10"
             android:hint="Phone Number"
+            android:background="@drawable/forminputbackground"
+            android:elevation="2dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_phone_black_24dp"
+            android:drawablePadding="15dp"
             android:inputType="textPersonName"
             android:padding="20dp" />
 
-        <EditText
-            android:id="@+id/editText8"
+        <Spinner
+            android:id="@+id/locationspinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:background="@android:color/darker_gray"
+            android:background="@drawable/forminputbackground"
+            android:drawableLeft="@drawable/ic_lock_black_24dp"
+            android:drawablePadding="15dp"
+            android:elevation="2dp"
             android:ems="10"
             android:hint="Location"
             android:inputType="textPersonName"
-            android:padding="20dp" />
+            android:padding="20dp"
+            android:spinnerMode="dialog" />
 
         <Button
             android:id="@+id/button2"
@@ -108,12 +143,12 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/colorPrimaryDark"
-            android:padding="5dp"
+            android:background="@drawable/circleintrobackground"
             android:text="Submit"
+            android:elevation="3dp"
             android:textColor="@android:color/background_light"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="19sp"
+ />
 
     </LinearLayout>
 

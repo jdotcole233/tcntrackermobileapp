@@ -10,10 +10,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 public class CreateFarmerProfile extends AppCompatActivity {
 
     private DrawerLayout mydrawer;
+    private Spinner genderSpinner;
+    private Spinner locationspinner;
 
 
     @Override
@@ -22,11 +26,24 @@ public class CreateFarmerProfile extends AppCompatActivity {
         setContentView(R.layout.activity_create_farmer_profile);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        genderSpinner = findViewById(R.id.genderspinner);
+        locationspinner = findViewById(R.id.locationspinner);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+//        Populate gender spinner
+        ArrayAdapter<CharSequence> genders = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+        genders.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(genders);
+
+        // populate location spinner with dummy data, don't forget to populate with dynamic data
+        ArrayAdapter<CharSequence> locations = ArrayAdapter.createFromResource(this, R.array.location, android.R.layout.simple_spinner_item);
+        locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationspinner.setAdapter(locations);
+
 
         mydrawer = findViewById(R.id.navigation_drawer);
         NavigationView navigationView = findViewById(R.id.dashboard_navigation);
