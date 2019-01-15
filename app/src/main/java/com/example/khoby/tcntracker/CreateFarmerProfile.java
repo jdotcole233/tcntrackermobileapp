@@ -13,7 +13,26 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import cz.msebera.android.httpclient.Header;
+
+import static com.example.khoby.tcntracker.MainActivity.jsonObjectRead;
+
 public class CreateFarmerProfile extends AppCompatActivity {
+
+    AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+    private final String LOCATION_URL = "http://192.168.100.10:8000/communities";
 
     private DrawerLayout mydrawer;
     private Spinner genderSpinner;
@@ -34,8 +53,15 @@ public class CreateFarmerProfile extends AppCompatActivity {
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        HashMap<Integer, String > comm = getLocaleCommunities();
+        ArrayList<String> communities = new ArrayList<>();
+
+        for (String community_name : comm.values()){
+            communities.add(community_name);
+        }
+
 //        Populate gender spinner
-        ArrayAdapter<CharSequence> genders = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> genders = ArrayAdapter.createFromResource(this,communities, android.R.layout.simple_spinner_item);
         genders.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(genders);
 
@@ -82,5 +108,50 @@ public class CreateFarmerProfile extends AppCompatActivity {
                 return false;
             }
         });
+        //get locations
+
+
     }
+
+    //get current locations and fill an ArrayList
+    public HashMap<Integer,String> getLocaleCommunities(){
+        final HashMap<Integer,String> communities = new HashMap<>();
+
+        try {
+            JSONObject jsonObject = jsonObjectRead();
+            if (jsonObject != null){
+                RequestParams params = new RequestParams("company_id", jsonObject.getInt("companiescompany_id"));
+                asyncHttpClient.post(LOCATION_URL, params, new JsonHttpResponseHandler(){
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        super.onSuccess(statusCode, headers, response);
+                        try{
+                            Log.d("tontracker", "" + statusCode + " -> Response " + response.getJSONArray("community").get(0).toString());
+                            int arraysize = response.getJSONArray("community").length();
+                            for (int i = 0; i < arraysize; i++){
+                                JSONObject object = response.getJSONArray("community").getJSONObject(i);
+                                communities.put(object.getInt("community_id"), object.getString("community_name"));
+                            }
+
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        super.onFailure(statusCode, headers, responseString, throwable);
+                        Log.d("tontracker", "Error from create farmer " + statusCode + "Response " + responseString);
+                    }
+                });
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return communities;
+    }
+
 }
