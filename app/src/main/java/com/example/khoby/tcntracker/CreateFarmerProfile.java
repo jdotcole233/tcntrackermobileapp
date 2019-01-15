@@ -24,6 +24,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -33,6 +35,7 @@ public class CreateFarmerProfile extends AppCompatActivity {
 
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
     private final String LOCATION_URL = "http://192.168.100.10:8000/communities";
+    final HashMap<Integer,String> communities = new HashMap<>();
 
     private DrawerLayout mydrawer;
     private Spinner genderSpinner;
@@ -53,22 +56,21 @@ public class CreateFarmerProfile extends AppCompatActivity {
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        HashMap<Integer, String > comm = getLocaleCommunities();
-        ArrayList<String> communities = new ArrayList<>();
-
-        for (String community_name : comm.values()){
-            communities.add(community_name);
+        getLocaleCommunities();
+        for (String a: communities.values()){
+            Log.d("tontracker", a);
         }
 
+
 //        Populate gender spinner
-        ArrayAdapter<CharSequence> genders = ArrayAdapter.createFromResource(this,communities, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> genders = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
         genders.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(genders);
 
         // populate location spinner with dummy data, don't forget to populate with dynamic data
-        ArrayAdapter<CharSequence> locations = ArrayAdapter.createFromResource(this, R.array.location, android.R.layout.simple_spinner_item);
-        locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationspinner.setAdapter(locations);
+//        ArrayAdapter<CharSequence> locations = ArrayAdapter.createFromResource(this, R.array.location, android.R.layout.simple_spinner_item);
+//        communities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        locationspinner.setAdapter(communities);
 
 
         mydrawer = findViewById(R.id.navigation_drawer);
@@ -114,8 +116,7 @@ public class CreateFarmerProfile extends AppCompatActivity {
     }
 
     //get current locations and fill an ArrayList
-    public HashMap<Integer,String> getLocaleCommunities(){
-        final HashMap<Integer,String> communities = new HashMap<>();
+    public void getLocaleCommunities(){ ;
 
         try {
             JSONObject jsonObject = jsonObjectRead();
@@ -128,11 +129,17 @@ public class CreateFarmerProfile extends AppCompatActivity {
                         try{
                             Log.d("tontracker", "" + statusCode + " -> Response " + response.getJSONArray("community").get(0).toString());
                             int arraysize = response.getJSONArray("community").length();
+                            List<String> comm_name = new ArrayList<>();
                             for (int i = 0; i < arraysize; i++){
                                 JSONObject object = response.getJSONArray("community").getJSONObject(i);
+                                Log.d("tontracker", object.getInt("community_id") + " " + object.getString("community_name") );
                                 communities.put(object.getInt("community_id"), object.getString("community_name"));
+                                comm_name.add(object.getString("community_name"));
                             }
 
+                            ArrayAdapter<String> communities = new ArrayAdapter<String>(CreateFarmerProfile.this,android.R.layout.simple_spinner_item,comm_name);
+                            communities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            locationspinner.setAdapter(communities);
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
@@ -150,8 +157,8 @@ public class CreateFarmerProfile extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
-        return communities;
+//
+//        return communities;
     }
 
 }
