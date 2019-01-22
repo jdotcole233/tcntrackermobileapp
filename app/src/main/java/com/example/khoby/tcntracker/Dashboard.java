@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.loopj.android.http.PersistentCookieStore;
+
 @SuppressLint("RestrictedApi")
 
 public class Dashboard extends AppCompatActivity {
@@ -23,6 +25,8 @@ public class Dashboard extends AppCompatActivity {
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
+        final PersistentCookieStore myCookieData = new PersistentCookieStore(Dashboard.this);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,6 +65,14 @@ public class Dashboard extends AppCompatActivity {
 
                     case R.id.logout:
                         Log.i("loggedout","loggedout");
+                        if (!myCookieData.getCookies().isEmpty()){
+                            Log.d("tontracker", myCookieData.getCookies().toString());
+                            myCookieData.clear();
+                            Log.d("tontracker", "After clear" + myCookieData.getCookies().toString());
+                            Intent switchBack = new Intent(Dashboard.this, MainActivity.class);
+                            startActivity(switchBack);
+                            finish();
+                        }
                         break;
 
                 }

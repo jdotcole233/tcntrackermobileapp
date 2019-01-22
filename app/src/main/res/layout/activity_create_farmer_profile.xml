@@ -34,7 +34,7 @@
         </android.support.v7.widget.Toolbar>
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/first_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -51,7 +51,7 @@
             android:padding="20dp" />
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/other_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -68,7 +68,7 @@
             android:padding="20dp" />
 
         <EditText
-            android:id="@+id/editText5"
+            android:id="@+id/last_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -102,7 +102,7 @@
             android:padding="20dp" />
 
         <EditText
-            android:id="@+id/editText7"
+            android:id="@+id/phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -137,7 +137,7 @@
             android:spinnerMode="dialog" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/register_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"

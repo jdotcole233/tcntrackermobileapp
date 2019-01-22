@@ -6,6 +6,7 @@ public class FarmerModel {
     private String farmer_name;
     private  String farmer_location;
     private String farmer_phone;
+    private String sync_status;
 
     public FarmerModel(Integer farmer_id, String farmer_name, String farmer_location, String farmer_phone) {
         this.farmer_id = farmer_id;

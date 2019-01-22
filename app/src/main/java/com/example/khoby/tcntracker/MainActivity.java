@@ -30,7 +30,7 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 public class MainActivity extends AppCompatActivity {
 
-    final private String LOGIN_URL = "http://192.168.100.10:8000/loginfrommobile";
+    final private String LOGIN_URL = "http://192.168.100.8:8000/loginfrommobile";
     AsyncHttpClient buyerRequest = new AsyncHttpClient();
     static JSONObject jsonObject = null;
     private EditText buyerEmail;
@@ -48,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
         buyerEmail = findViewById(R.id.buyeremail);
         buyerPassword = findViewById(R.id.buyerpassword);
         loginButton = findViewById(R.id.loginbutton);
-        Context context = this;
+        final PersistentCookieStore myCookieData = new PersistentCookieStore(MainActivity.this);
 
+        if (myCookieData.getCookies().isEmpty()){
 
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -78,18 +79,22 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             super.onSuccess(statusCode, headers, response);
-                            PersistentCookieStore myCookieData = new PersistentCookieStore(MainActivity.this);
                             saveBuyerDataOnDevice(response);
+                            PersistentCookieStore CookieData = new PersistentCookieStore(MainActivity.this);
+
                             Log.d("tontracker", "status code " + statusCode + " response " + response.toString());
                             String data = "";
-                            for (Cookie a : myCookieData.getCookies()){
+                            for (Cookie a : CookieData.getCookies()){
                                 data = a.getValue();
                                 Log.d("tontrackercookier", a.getValue().toString());
 
                             }
                             jsonObject = jsonDecoder(data);
+
+
                             Intent changeScreen = new Intent(MainActivity.this, Dashboard.class);
                             startActivity(changeScreen);
+                            finish();
 
 
                         }
@@ -109,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        } else {
+            Intent changeScreen = new Intent(MainActivity.this, Dashboard.class);
+            startActivity(changeScreen);
+            finish();
+        }
 
     }
 
@@ -121,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
         PersistentCookieStore myCookieData = new PersistentCookieStore(this);
         BasicClientCookie personalCookies = new BasicClientCookie("buyerData", data.toString());
         personalCookies.setVersion(1);
-        personalCookies.setDomain("http://192.168.100.10:8000");
+        personalCookies.setDomain("http://192.168.100.7:8000");
         personalCookies.setPath("/");
         myCookieData.addCookie(personalCookies);
-        Log.d("tontracker", "cookie saved successfully");
+        Log.d("tontracker", "cookie saved successfully ");
     }
 
 
