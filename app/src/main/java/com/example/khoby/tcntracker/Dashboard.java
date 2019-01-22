@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -31,8 +32,6 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 public class Dashboard extends AppCompatActivity {
 
     private DrawerLayout mydrawer;
-    private final String LOCATION_URL = "http://192.168.100.9:8000/communities";
-
 
     @Override
     public void onCreate( Bundle savedInstanceState) {
@@ -134,7 +133,7 @@ public class Dashboard extends AppCompatActivity {
             AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
             RequestParams requestParams = new RequestParams();
             requestParams.add("company_id", jsonObject);
-            asyncHttpClient.post(LOCATION_URL, requestParams, new JsonHttpResponseHandler(){
+            asyncHttpClient.post(FarmerContract.LOCATION_URL, requestParams, new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);

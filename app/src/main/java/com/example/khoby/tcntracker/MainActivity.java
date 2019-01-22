@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -30,7 +31,6 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 public class MainActivity extends AppCompatActivity {
 
-    final private String LOGIN_URL = "http://192.168.100.9:8000/loginfrommobile";
     AsyncHttpClient buyerRequest = new AsyncHttpClient();
     static JSONObject jsonObject = null;
     private EditText buyerEmail;
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     buyerLoginData.put("password", userPassword);
 
 
-                    buyerRequest.post(LOGIN_URL, buyerLoginData, new JsonHttpResponseHandler(){
+                    buyerRequest.post(FarmerContract.LOGIN_URL, buyerLoginData, new JsonHttpResponseHandler(){
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             super.onSuccess(statusCode, headers, response);

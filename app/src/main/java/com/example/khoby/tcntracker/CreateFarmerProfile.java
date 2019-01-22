@@ -48,7 +48,7 @@ import static com.example.khoby.tcntracker.MainActivity.jsonObjectRead;
 public class CreateFarmerProfile extends AppCompatActivity {
 
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-    private final String LOCATION_URL = "http://192.168.100.9:8000/communities";
+//    private final String LOCATION_URL = "http://192.168.100.9:8000/communities";
 
 
     private DrawerLayout mydrawer;
@@ -335,21 +335,59 @@ public class CreateFarmerProfile extends AppCompatActivity {
     }
 
 
+    //save data to local database
+    public void saveDataToDeviceDatabase(HashMap<String, String> farmerdata){
+        SQLDatabasehelper sqlDatabasehelper = new SQLDatabasehelper(this);
+        SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getWritableDatabase();
+        sqlDatabasehelper.populateDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_FAILED,sqLiteDatabase);
+        Log.d("tontracker", "Data saved successfully");
+        sqlDatabasehelper.close();
+    }
 
 
     //save data to the device whiles checking for internet connectivity
-    public void saveDataToDeviceDatabase(HashMap<String, String> farmerdata){
+    public void saveDataToServerDatabase(final HashMap<String, String> farmerdata){
         boolean isConnectionAvailable = TonTrackerNetworkService.isNetworkConnectionAvailable(this);
-        SQLDatabasehelper sqlDatabasehelper = new SQLDatabasehelper(this);
-        SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getWritableDatabase();
 
         if (isConnectionAvailable){
 
+            AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+            RequestParams requestParams = new RequestParams();
+            requestParams.add("","");
+            requestParams.add("","");
+            requestParams.add("","");
+            requestParams.add("","");
+            requestParams.add("","");
+            requestParams.add("","");
+
+            asyncHttpClient.post(FarmerContract.REGISTER_FARMER_URL, requestParams, new JsonHttpResponseHandler(){
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    try {
+                        String responseFromServer = response.getString("response");
+                        if(responseFromServer.equals("SUCCESSFUL")){
+                            saveDataToDeviceDatabase(farmerdata);
+                            Log.d("tontracker", "Saved to the server and local database");
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    saveDataToDeviceDatabase(farmerdata);
+                    Log.d("tontracker", "Error encountered, but data has been saved to local device");
+                }
+            });
         } else {
-            sqlDatabasehelper.populateDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_FAILED,sqLiteDatabase);
-            Log.d("tontracker", "Data saved successfully");
+            saveDataToDeviceDatabase(farmerdata);
         }
-        sqlDatabasehelper.close();
     }
 
 
