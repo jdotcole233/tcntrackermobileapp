@@ -13,13 +13,26 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.cookie.Cookie;
+import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 @SuppressLint("RestrictedApi")
 
 public class Dashboard extends AppCompatActivity {
 
     private DrawerLayout mydrawer;
+    private final String LOCATION_URL = "http://192.168.100.9:8000/communities";
+
 
     @Override
     public void onCreate( Bundle savedInstanceState) {
@@ -79,7 +92,15 @@ public class Dashboard extends AppCompatActivity {
 
                 return false;
             }
-        });
+        }); //end of navigation drawer
+
+        saveCommunitiesOnDevice();
+
+
+
+
+
+
     }
 
     @Override
@@ -90,5 +111,74 @@ public class Dashboard extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void saveCommunitiesOnDevice() {
+        PersistentCookieStore persistentCookieStore = new PersistentCookieStore(Dashboard.this);
+        BasicClientCookie basicClientCookie = null;
+        String jsonObject = null;
+        int i = 0;
+        for (Cookie a : persistentCookieStore.getCookies()){
+            i++;
+            try {
+                jsonObject = new JSONObject(a.getValue()).getJSONObject("buyer_info").getString("companiescompany_id");
+                if (jsonObject.contains("companiescompany_id")) break;
+                Log.d("tontracker","Number " + i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!jsonObject.isEmpty()){
+            AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+            RequestParams requestParams = new RequestParams();
+            requestParams.add("company_id", jsonObject);
+            asyncHttpClient.post(LOCATION_URL, requestParams, new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    Log.d("tontracker", "jsonObject returned for communities" + response);
+                    PersistentCookieStore innerCookiesStore = new PersistentCookieStore(Dashboard.this);
+                    BasicClientCookie cookie = new BasicClientCookie("communities", response.toString());
+                    cookie.setVersion(2);
+                    cookie.setDomain("http://192.168.100.9:8000");
+                    cookie.setPath("/");
+                    innerCookiesStore.addCookie(cookie);
+
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    super.onSuccess(statusCode, headers, response);
+                    Log.d("tontracker", "jsonArray returned for communities");
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    Log.d("tontracker", "jsonObject error returned for communities " + errorResponse);
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    Log.d("tontracker", "jsonArray error returned for communities");
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                    Log.d("tontracker", "throwable error returned for communities");
+
+                }
+            });
+        }
+
+
+
     }
 }

@@ -1,6 +1,8 @@
 package com.example.khoby.tcntracker;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -12,15 +14,19 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.example.khoby.tcntracker.Database.FarmerContract;
+import com.example.khoby.tcntracker.Database.SQLDatabasehelper;
 import com.example.khoby.tcntracker.Model.FarmerModel;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FarmerProfiles extends AppCompatActivity {
 
     private ListView farmer_list;
     private ArrayList<FarmerModel> farmerModels;
     private FarmerListAdapter farmerListAdapter;
+    private ArrayList<FarmerModel> farmersOutput;
     private DrawerLayout mydrawer;
 
 
@@ -38,7 +44,9 @@ public class FarmerProfiles extends AppCompatActivity {
 
         farmer_list = findViewById(R.id.farmer_list);
         farmerModels = getFarmers();
-        farmerListAdapter = new FarmerListAdapter(this, farmerModels);
+        farmersOutput = new ArrayList<>();
+        readFromLocalDeviceDatabase();
+        farmerListAdapter = new FarmerListAdapter(this, farmersOutput);
         farmer_list.setAdapter(farmerListAdapter);
 
 
@@ -96,4 +104,28 @@ public class FarmerProfiles extends AppCompatActivity {
 
             return  farmerModels;
     }
+
+
+    public void readFromLocalDeviceDatabase(){
+        SQLDatabasehelper sqlDatabasehelper = new SQLDatabasehelper(this);
+        SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getReadableDatabase();
+        int count_id = 0;
+
+        Cursor cursor = sqlDatabasehelper.readFromDeviceDatabase(sqLiteDatabase);
+        while (cursor.moveToNext()){
+            String fullName = cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_FIRST_NAME)) + " " +
+                    cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_OTHER_NAME)) + " " +
+                    cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_LAST_NAME));
+            String farmerLocation = cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_NAME));
+
+            String farmerPhone = cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_PHONE_NUMBER));
+            count_id++;
+            farmersOutput.add(new FarmerModel(count_id, fullName, farmerLocation, farmerPhone));
+        }
+        cursor.close();
+        sqlDatabasehelper.close();
+
+    }
+
+
 }

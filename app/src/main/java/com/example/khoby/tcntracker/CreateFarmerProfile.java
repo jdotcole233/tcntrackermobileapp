@@ -21,35 +21,41 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLDatabasehelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.cookie.Cookie;
 
 import static com.example.khoby.tcntracker.MainActivity.jsonObjectRead;
 
 public class CreateFarmerProfile extends AppCompatActivity {
 
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-    private final String LOCATION_URL = "http://192.168.100.8:8000/communities";
+    private final String LOCATION_URL = "http://192.168.100.9:8000/communities";
 
 
     private DrawerLayout mydrawer;
     private Spinner genderSpinner;
     private Spinner locationspinner;
     HashMap<Integer, String> localcommunity = null;
+    public  static HashMap<String, Integer> returncommunity = null;
     private EditText first_name;
     private  EditText other_name;
     private  EditText last_name;
@@ -57,6 +63,7 @@ public class CreateFarmerProfile extends AppCompatActivity {
     private Button register_button;
     private String selectedGender;
     private String selectedLocation;
+    private Integer selectedLocationID;
 
 
 
@@ -82,12 +89,44 @@ public class CreateFarmerProfile extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         final PersistentCookieStore myCookieData = new PersistentCookieStore(this);
         localcommunity = new HashMap<>();
-        getLocaleCommunities();
+        returncommunity = new HashMap<>();
+        List<String> communityname = new ArrayList<>();
+        communityname.add("Select Community");
+        JSONArray jsonArray = new JSONArray();
 
-        //get locations
-        for (String a : localcommunity.values()){
-            Log.d("tontracker", a);
+
+
+        //Filter cookies to get communities
+        for (Cookie cookie : myCookieData.getCookies()){
+            try {
+                JSONObject object = new JSONObject(cookie.getValue());
+                if(cookie.getVersion() == 2){
+                    jsonArray = object.getJSONArray("community");
+                    break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
+        //set up List array for for location spinner and set up HashMap to keep track of location and their respective id
+        for (int count = 0; count < jsonArray.length(); count++){
+            try {
+                Integer communityID =  new JSONObject(String.valueOf(jsonArray.get(count))).getInt("community_id");
+                String communityName =  new JSONObject(String.valueOf(jsonArray.get(count))).getString("community_name");
+                returncommunity.put(communityName, communityID);
+                communityname.add(communityName);
+                Log.d("tontracker", "Locate Array" + communityID + " " + communityName);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+       // getLocaleCommunities();
+
 
 
 //        Populate gender spinner
@@ -116,7 +155,8 @@ public class CreateFarmerProfile extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedLocation = parent.getItemAtPosition(position).toString();
-                Log.d("tontracker", parent.getItemAtPosition(position).toString());
+                selectedLocationID = returncommunity.get(selectedLocation);
+                Log.d("tontracker", parent.getItemAtPosition(position).toString() + " " + selectedLocationID);
             }
 
             @Override
@@ -135,13 +175,19 @@ public class CreateFarmerProfile extends AppCompatActivity {
                 } else{
 
                     HashMap<String, String> collectedData = new HashMap<>();
+                    Date date = new Date();
+                    long time = date.getTime();
+                    Timestamp timestamp = new Timestamp(time);
+
                     //Check if the device is not in airplane mode, or there is an active internet connection
                     collectedData.put("first_name", first_name.getText().toString());
-                    collectedData.put("other_name", other_name.getText().toString());
+                    collectedData.put("other_name", other_name.getText().equals("")? " " : other_name.getText().toString());
                     collectedData.put("last_name", last_name.getText().toString());
                     collectedData.put("gender", selectedGender);
                     collectedData.put("phone_number", phone_number.getText().toString());
-                    collectedData.put("location", selectedLocation);
+                    collectedData.put("community_id", String.valueOf(selectedLocationID));
+                    collectedData.put("community_name", selectedLocation);
+                    collectedData.put("created_at", String.valueOf(timestamp));
                     saveDataToDeviceDatabase(collectedData);
                     clearFromInputs();
                     Log.d("tontracker", "properly filled");
@@ -152,8 +198,13 @@ public class CreateFarmerProfile extends AppCompatActivity {
 
         // populate location spinner with dummy data, don't forget to populate with dynamic data
 //        ArrayAdapter<CharSequence> locations = ArrayAdapter.createFromResource(this, R.array.location, android.R.layout.simple_spinner_item);
-//        communities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        locationspinner.setAdapter(communities);
+//        locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        locationspinner.setAdapter(locations);
+
+
+        ArrayAdapter<String> communities = new ArrayAdapter<String>(CreateFarmerProfile.this,android.R.layout.simple_spinner_item, communityname);
+        communities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationspinner.setAdapter(communities);
 
 
         mydrawer = findViewById(R.id.navigation_drawer);
@@ -206,7 +257,7 @@ public class CreateFarmerProfile extends AppCompatActivity {
     }
 
     //get current locations and fill an ArrayList
-    public void getLocaleCommunities(){
+/*    public void getLocaleCommunities(){
 
         try {
             JSONObject jsonObject = jsonObjectRead();
@@ -253,14 +304,8 @@ public class CreateFarmerProfile extends AppCompatActivity {
 //
 //        return communities;
     }
+*/
 
-
-
-    public HashMap<Integer, String> passCommunities(HashMap<Integer, String> locales){
-        localcommunity = locales;
-        Log.d("tontracker", "passed0");
-        return localcommunity;
-    }
 
 
     //Validate farmer forms to ensure mandatory parts are filled
@@ -269,7 +314,8 @@ public class CreateFarmerProfile extends AppCompatActivity {
         if ( first_name.getText().toString().isEmpty() ||
                 last_name.getText().toString().isEmpty() ||
                 phone_number.getText().toString().isEmpty() ||
-                selectedGender.equals("Select Gender") ){
+                selectedGender.equals("Select Gender") ||
+                selectedLocation.equals("Select Community")){
 
             isFilled = false;
 
@@ -284,6 +330,8 @@ public class CreateFarmerProfile extends AppCompatActivity {
         other_name.setText("");
         last_name.setText("");
         phone_number.setText("");
+        genderSpinner.setSelection(0);
+        locationspinner.setSelection(0);
     }
 
 
@@ -298,10 +346,11 @@ public class CreateFarmerProfile extends AppCompatActivity {
         if (isConnectionAvailable){
 
         } else {
-            sqlDatabasehelper.populateDeviceDatabase(farmerdata, sqLiteDatabase);
+            sqlDatabasehelper.populateDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_FAILED,sqLiteDatabase);
             Log.d("tontracker", "Data saved successfully");
         }
         sqlDatabasehelper.close();
     }
+
 
 }

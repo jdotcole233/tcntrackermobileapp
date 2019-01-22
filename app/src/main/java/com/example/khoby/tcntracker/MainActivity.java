@@ -30,7 +30,7 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 public class MainActivity extends AppCompatActivity {
 
-    final private String LOGIN_URL = "http://192.168.100.8:8000/loginfrommobile";
+    final private String LOGIN_URL = "http://192.168.100.9:8000/loginfrommobile";
     AsyncHttpClient buyerRequest = new AsyncHttpClient();
     static JSONObject jsonObject = null;
     private EditText buyerEmail;
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         PersistentCookieStore myCookieData = new PersistentCookieStore(this);
         BasicClientCookie personalCookies = new BasicClientCookie("buyerData", data.toString());
         personalCookies.setVersion(1);
-        personalCookies.setDomain("http://192.168.100.7:8000");
+        personalCookies.setDomain("http://192.168.100.9:8000");
         personalCookies.setPath("/");
         myCookieData.addCookie(personalCookies);
         Log.d("tontracker", "cookie saved successfully ");

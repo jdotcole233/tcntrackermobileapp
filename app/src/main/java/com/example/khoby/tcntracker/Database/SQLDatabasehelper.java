@@ -13,15 +13,17 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String CREATE_TABLE = "CREATE TABLE " + FarmerContract.FarmerDatabaseEntry.TABLE_NAME
-            + " (" + FarmerContract.FarmerDatabaseEntry._ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_FIRST_NAME + " TEXT," + FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_OTHER_NAME
-            + " TEXT," + FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_LAST_NAME + " TEXT," +
+            + " (" + FarmerContract.FarmerDatabaseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_FIRST_NAME + " TEXT," +
+            FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_OTHER_NAME + " TEXT," +
+            FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_LAST_NAME + " TEXT," +
             FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_GENDER + " TEXT," +
             FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_PHONE_NUMBER + " TEXT," +
             FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_ID + " INTEGER," +
             FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_SYNC_STATUS + " INTEGER," +
-            FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_CREATED_AT + " TIMESTAMP," +
-            FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_UPDATED_AT + "TIMESTAMP)";
+            FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_NAME + " TEXT," +
+            FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_CREATED_AT + " TIMESTAMP)";
+
     private static final String DELETE_TABLE  = "DROP TABLE IF EXISTS " + FarmerContract.FarmerDatabaseEntry.TABLE_NAME;
 
 
@@ -29,7 +31,6 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
     public SQLDatabasehelper(Context context){
         super(context, FarmerContract.DATABASE_NAME, null, DATABASE_VERSION);
     }
-
 
 
     @Override
@@ -44,7 +45,7 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
     }
 
 
-    public void populateDeviceDatabase(HashMap<String, String> farmerdata,  SQLiteDatabase database){
+    public void populateDeviceDatabase(HashMap<String, String> farmerdata, int sync_status, SQLiteDatabase database){
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_FIRST_NAME, farmerdata.get("first_name"));
@@ -52,10 +53,11 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
         contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_LAST_NAME, farmerdata.get("last_name"));
         contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_GENDER, farmerdata.get("gender"));
         contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_PHONE_NUMBER, farmerdata.get("phone_number"));
-        contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_ID, Integer.parseInt(farmerdata.get("community_id")));
-        contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_SYNC_STATUS, Integer.parseInt(farmerdata.get("sync_status")));
+        contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_ID, farmerdata.get("community_id"));
+        contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_NAME, farmerdata.get("community_name"));
+        contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_SYNC_STATUS, sync_status);
         contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_CREATED_AT, farmerdata.get("created_at"));
-        contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_UPDATED_AT, farmerdata.get("updated_at"));
+
 
         database.insert(FarmerContract.FarmerDatabaseEntry.TABLE_NAME,null, contentValues);
 
@@ -67,6 +69,7 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
                     FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_LAST_NAME,
                     FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_GENDER,
                     FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_PHONE_NUMBER,
+                    FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_NAME,
                     FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_CREATED_AT
             };
 

@@ -19,6 +19,7 @@ public class FarmerContract {
         public static final String COLUMN_NAME_GENDER = "gender";
         public static final String COLUMN_NAME_PHONE_NUMBER = "phone_number";
         public static final String COLUMN_NAME_COMMUNITY_ID = "communitiescommunity_id";
+        public static final String COLUMN_NAME_COMMUNITY_NAME = "community_name";
         public static final String COLUMN_NAME_SYNC_STATUS = "sync_status";
         public static final String COLUMN_NAME_CREATED_AT = "created_at";
         public static final String COLUMN_NAME_UPDATED_AT = "updated_at";
