@@ -11,6 +11,7 @@ public class FarmerContract {
     public static  final String LOGIN_URL = "http://192.168.100.7:8000/loginfrommobile";
     public static final String REGISTER_FARMER_URL = "http://192.168.100.7:8000/registerFarmerFromMobile";
     public static final String LOCATION_URL = "http://192.168.100.7:8000/communities";
+    public static  final String UPDATE_APPLICATION = "com.example.tcntracker.updateapplication";
 
     private  FarmerContract(){ }
 

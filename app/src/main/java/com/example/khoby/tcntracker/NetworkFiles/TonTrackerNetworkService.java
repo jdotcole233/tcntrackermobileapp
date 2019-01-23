@@ -1,4 +1,4 @@
-package com.example.khoby.tcntracker;
+package com.example.khoby.tcntracker.NetworkFiles;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

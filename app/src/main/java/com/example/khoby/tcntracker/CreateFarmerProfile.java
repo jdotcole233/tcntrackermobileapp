@@ -1,11 +1,8 @@
 package com.example.khoby.tcntracker;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +22,7 @@ import android.widget.Spinner;
 import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
 import com.example.khoby.tcntracker.Database.SQLDatabasehelper;
+import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkService;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -38,14 +36,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.cookie.Cookie;
-
-import static com.example.khoby.tcntracker.MainActivity.jsonObjectRead;
 
 public class CreateFarmerProfile extends AppCompatActivity {
 

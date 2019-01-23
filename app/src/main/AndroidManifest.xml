@@ -22,6 +22,7 @@
          <activity android:name=".CreateFarmerProfile"></activity>
         <activity android:name=".FarmerProfiles"></activity>
         <activity android:name=".Dashboard"></activity>
+
     </application>
 
 </manifest>

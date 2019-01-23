@@ -71,18 +71,21 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
                     FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_GENDER,
                     FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_PHONE_NUMBER,
                     FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_NAME,
+                    FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_ID,
+                    FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_SYNC_STATUS,
+                    FarmerContract.FarmerDatabaseEntry._ID,
                     FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_CREATED_AT
             };
 
             return (database.query(FarmerContract.FarmerDatabaseEntry.TABLE_NAME, projection, null, null, null, null, null));
     }
 
-    public void updatedeviceDatabase(String name,int syn_status, SQLiteDatabase database){
+    public void updatedeviceDatabase(String farmer_id,int syn_status, SQLiteDatabase database){
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_SYNC_STATUS, syn_status);
-        String selection = FarmerContract.FarmerDatabaseEntry.TABLE_NAME + " LIKE ?";
-        String [] selction_args = {name};
+        String selection = "_id = ?";//FarmerContract.FarmerDatabaseEntry.TABLE_NAME + " Like ?";
+        String [] selction_args = {farmer_id};
 
 
         database.update(FarmerContract.FarmerDatabaseEntry.TABLE_NAME, contentValues, selection, selction_args);

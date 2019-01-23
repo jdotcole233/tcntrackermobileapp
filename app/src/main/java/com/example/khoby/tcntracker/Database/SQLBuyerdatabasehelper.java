@@ -25,10 +25,12 @@ public class SQLBuyerdatabasehelper extends SQLiteOpenHelper {
             FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_GENDER + " TEXT)";
 
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + FarmerContract.BuyerDatabaseEntry.TABLE_NAME;
+    private static final String TRUNCATE_TABLE = "DELETE FROM " + FarmerContract.BuyerDatabaseEntry.TABLE_NAME;
 
 
     public SQLBuyerdatabasehelper(Context context) {
         super(context, FarmerContract.BUYER_DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     @Override

@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
     public void saveBuyerInformationToLocalDatabase(HashMap<String ,String> buyer){
         SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(MainActivity.this);
         SQLiteDatabase sqLiteDatabase = sqlBuyerdatabasehelper.getWritableDatabase();
+        sqlBuyerdatabasehelper.onCreate(sqLiteDatabase);
         sqlBuyerdatabasehelper.updateBuyerLocalDevice(buyer, sqLiteDatabase);
         Log.d("tontracker", "Buyer information sent to local database");
         sqlBuyerdatabasehelper.close();
