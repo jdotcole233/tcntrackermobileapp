@@ -2,6 +2,7 @@ package com.example.khoby.tcntracker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
+import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
 import com.example.khoby.tcntracker.Database.SQLDatabasehelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -188,7 +190,8 @@ public class CreateFarmerProfile extends AppCompatActivity {
                     collectedData.put("community_id", String.valueOf(selectedLocationID));
                     collectedData.put("community_name", selectedLocation);
                     collectedData.put("created_at", String.valueOf(timestamp));
-                    saveDataToDeviceDatabase(collectedData);
+//                    saveDataToDeviceDatabase(collectedData);
+                    saveDataToServerDatabase(collectedData);
                     clearFromInputs();
                     Log.d("tontracker", "properly filled");
                 }
@@ -239,6 +242,9 @@ public class CreateFarmerProfile extends AppCompatActivity {
                         Log.i("loggedout","loggedout");
                         if (!myCookieData.getCookies().isEmpty()){
                             Log.d("tontracker", myCookieData.getCookies().toString());
+                            SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(CreateFarmerProfile.this);
+                            SQLiteDatabase sqLiteDatabase = sqlBuyerdatabasehelper.getWritableDatabase();
+                            sqlBuyerdatabasehelper.resetBuyerTable(sqLiteDatabase);
                             myCookieData.clear();
                             Log.d("tontracker", "After clear" + myCookieData.getCookies().toString());
                             Intent switchBack = new Intent(CreateFarmerProfile.this, MainActivity.class);
@@ -347,25 +353,45 @@ public class CreateFarmerProfile extends AppCompatActivity {
 
     //save data to the device whiles checking for internet connectivity
     public void saveDataToServerDatabase(final HashMap<String, String> farmerdata){
+
         boolean isConnectionAvailable = TonTrackerNetworkService.isNetworkConnectionAvailable(this);
+        SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
+        SQLiteDatabase sqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
+
+        Cursor cursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
+        String buyer_id = null;
+        String company_id = null;
+
+
+        while (cursor.moveToNext()){
+            buyer_id = cursor.getString(cursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID));
+            company_id = cursor.getString(cursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID));
+        }
+
 
         if (isConnectionAvailable){
 
             AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
             RequestParams requestParams = new RequestParams();
-            requestParams.add("","");
-            requestParams.add("","");
-            requestParams.add("","");
-            requestParams.add("","");
-            requestParams.add("","");
-            requestParams.add("","");
+
+            requestParams.add("first_name", farmerdata.get("first_name"));
+            requestParams.add("other_name", farmerdata.get("other_name"));
+            requestParams.add("last_name", farmerdata.get("last_name"));
+            requestParams.add("gender", farmerdata.get("gender"));
+            requestParams.add("phone_number", farmerdata.get("phone_number"));
+            requestParams.add("buyer_id", buyer_id);
+            requestParams.add("community_id", farmerdata.get("community_id"));
+            requestParams.add("company_id", company_id);
+            requestParams.add("created_at", farmerdata.get("created_at"));
 
             asyncHttpClient.post(FarmerContract.REGISTER_FARMER_URL, requestParams, new JsonHttpResponseHandler(){
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
+
                     try {
+
                         String responseFromServer = response.getString("response");
                         if(responseFromServer.equals("SUCCESSFUL")){
                             saveDataToDeviceDatabase(farmerdata);
@@ -383,6 +409,12 @@ public class CreateFarmerProfile extends AppCompatActivity {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     saveDataToDeviceDatabase(farmerdata);
                     Log.d("tontracker", "Error encountered, but data has been saved to local device");
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                    Log.d("tontracker", responseString);
                 }
             });
         } else {

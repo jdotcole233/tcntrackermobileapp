@@ -1,8 +1,12 @@
 package com.example.khoby.tcntracker.Database;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.HashMap;
 
 public class SQLBuyerdatabasehelper extends SQLiteOpenHelper {
 
@@ -38,7 +42,34 @@ public class SQLBuyerdatabasehelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void updateBuyerLocalDevice(HashMap<String, String> buyerInformation, SQLiteDatabase database){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_FIRST_NAME, buyerInformation.get("first_name"));
+        contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_OTHER_NAME, buyerInformation.get("other_name"));
+        contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_LAST_NAME, buyerInformation.get("last_name"));
+        contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_GENDER, buyerInformation.get("gender"));
+        contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID, buyerInformation.get("buyer_id"));
+        contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID, buyerInformation.get("company_id"));
+        database.insert(FarmerContract.BuyerDatabaseEntry.TABLE_NAME, null, contentValues);
+    }
 
+    public Cursor readBuyerDataLocally(SQLiteDatabase database){
+        String [] projection = {FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_FIRST_NAME,
+                FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_OTHER_NAME,
+                FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_LAST_NAME,
+                FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_GENDER,
+                FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID,
+                FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID
+        };
+
+        return (database.query(FarmerContract.BuyerDatabaseEntry.TABLE_NAME, projection, null, null,null, null, null));
+
+    }
+
+
+    public void resetBuyerTable(SQLiteDatabase database){
+        database.execSQL(DROP_TABLE);
+    }
 
 
 

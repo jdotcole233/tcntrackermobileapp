@@ -15,8 +15,10 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
+import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
 import com.example.khoby.tcntracker.Database.SQLDatabasehelper;
 import com.example.khoby.tcntracker.Model.FarmerModel;
+import com.loopj.android.http.PersistentCookieStore;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -43,7 +45,8 @@ public class FarmerProfiles extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         farmer_list = findViewById(R.id.farmer_list);
-        farmerModels = getFarmers();
+       // farmerModels = getFarmers();
+        final PersistentCookieStore myCookieData = new PersistentCookieStore(this);
         farmersOutput = new ArrayList<>();
         readFromLocalDeviceDatabase();
         farmerListAdapter = new FarmerListAdapter(this, farmersOutput);
@@ -81,6 +84,17 @@ public class FarmerProfiles extends AppCompatActivity {
 
                     case R.id.logout:
                         Log.i("loggedout","loggedout");
+                        if (!myCookieData.getCookies().isEmpty()){
+                            Log.d("tontracker", myCookieData.getCookies().toString());
+                            SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(FarmerProfiles.this);
+                            SQLiteDatabase sqLiteDatabase = sqlBuyerdatabasehelper.getWritableDatabase();
+                            sqlBuyerdatabasehelper.resetBuyerTable(sqLiteDatabase);
+                            myCookieData.clear();
+                            Log.d("tontracker", "After clear" + myCookieData.getCookies().toString());
+                            Intent switchBack = new Intent(FarmerProfiles.this, MainActivity.class);
+                            startActivity(switchBack);
+                            finish();
+                        }
                         break;
 
                 }
@@ -90,20 +104,20 @@ public class FarmerProfiles extends AppCompatActivity {
         });
     }
 
-    public static ArrayList<FarmerModel> getFarmers(){
-            ArrayList<FarmerModel> farmerModels = new ArrayList<>();
-
-        farmerModels.add(new FarmerModel(1,"Kwame Ampong","Drobo","0503848404"));
-        farmerModels.add(new FarmerModel(2,"Mary Affum","Techiman","0503848404"));
-        farmerModels.add(new FarmerModel(3,"Sampson Hackeem","Kumasi","0503848404"));
-        farmerModels.add(new FarmerModel(4,"Ama Mercy","Bono","0503848404"));
-        farmerModels.add(new FarmerModel(5,"Sassu Sarfo","Techiman","0503848404"));
-        farmerModels.add(new FarmerModel(6,"Francis Duman","Drobo","0503848404"));
-        farmerModels.add(new FarmerModel(7,"Eric Aseidu","Kumasi","0503848404"));
-        farmerModels.add(new FarmerModel(8,"Deborah Sare","Bono","0503848404"));
-
-            return  farmerModels;
-    }
+//    public static ArrayList<FarmerModel> getFarmers(){
+//            ArrayList<FarmerModel> farmerModels = new ArrayList<>();
+//
+//        farmerModels.add(new FarmerModel(1,"Kwame Ampong","Drobo","0503848404"));
+//        farmerModels.add(new FarmerModel(2,"Mary Affum","Techiman","0503848404"));
+//        farmerModels.add(new FarmerModel(3,"Sampson Hackeem","Kumasi","0503848404"));
+//        farmerModels.add(new FarmerModel(4,"Ama Mercy","Bono","0503848404"));
+//        farmerModels.add(new FarmerModel(5,"Sassu Sarfo","Techiman","0503848404"));
+//        farmerModels.add(new FarmerModel(6,"Francis Duman","Drobo","0503848404"));
+//        farmerModels.add(new FarmerModel(7,"Eric Aseidu","Kumasi","0503848404"));
+//        farmerModels.add(new FarmerModel(8,"Deborah Sare","Bono","0503848404"));
+//
+//            return  farmerModels;
+//    }
 
 
     public void readFromLocalDeviceDatabase(){

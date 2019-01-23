@@ -8,9 +8,9 @@ public class FarmerContract {
     public static  final int SYNC_STATUS_FAILED = 0;
     public static final String DATABASE_NAME = "tontrackerdatabase";
     public static final String BUYER_DATABASE_NAME = "buyerdatabse";
-    public static  final String LOGIN_URL = "http://192.168.100.9:8000/loginfrommobile";
-    public static final String REGISTER_FARMER_URL = "http://192.168.100.9:8000/registerFarmerFromMobile";
-    public static final String LOCATION_URL = "http://192.168.100.9:8000/communities";
+    public static  final String LOGIN_URL = "http://192.168.100.7:8000/loginfrommobile";
+    public static final String REGISTER_FARMER_URL = "http://192.168.100.7:8000/registerFarmerFromMobile";
+    public static final String LOCATION_URL = "http://192.168.100.7:8000/communities";
 
     private  FarmerContract(){ }
 

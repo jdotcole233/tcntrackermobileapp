@@ -2,6 +2,7 @@ package com.example.khoby.tcntracker;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
+import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -78,6 +80,9 @@ public class Dashboard extends AppCompatActivity {
                     case R.id.logout:
                         Log.i("loggedout","loggedout");
                         if (!myCookieData.getCookies().isEmpty()){
+                            SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(Dashboard.this);
+                            SQLiteDatabase sqLiteDatabase = sqlBuyerdatabasehelper.getWritableDatabase();
+                            sqlBuyerdatabasehelper.resetBuyerTable(sqLiteDatabase);
                             Log.d("tontracker", myCookieData.getCookies().toString());
                             myCookieData.clear();
                             Log.d("tontracker", "After clear" + myCookieData.getCookies().toString());

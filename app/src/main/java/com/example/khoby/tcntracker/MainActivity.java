@@ -3,6 +3,7 @@ package com.example.khoby.tcntracker;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
+import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -23,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.CookieStore;
+import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.cookie.Cookie;
@@ -138,11 +141,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static JSONObject jsonDecoder(String data){
+    public  JSONObject jsonDecoder(String data){
 
         try {
             JSONObject obj = new JSONObject(data);
             JSONObject jsonObject = new JSONObject(obj.getString("buyer_info"));
+
+            HashMap<String, String> responseData = new HashMap<>();
+            responseData.put("first_name", jsonObject.getString("first_name"));
+            responseData.put("other_name", jsonObject.getString("other_name"));
+            responseData.put("last_name", jsonObject.getString("last_name"));
+            responseData.put("gender", jsonObject.getString("gender"));
+            responseData.put("company_id", String.valueOf(jsonObject.getInt("companiescompany_id")));
+            responseData.put("buyer_id", String.valueOf(jsonObject.getInt("buyer_id")));
+            saveBuyerInformationToLocalDatabase(responseData);
+
             Log.d("tontracker", jsonObject.get("companiescompany_id").toString());
             return jsonObject;
         } catch (JSONException e) {
@@ -154,6 +167,15 @@ public class MainActivity extends AppCompatActivity {
 
     public static JSONObject jsonObjectRead(){
         return jsonObject;
+    }
+
+    public void saveBuyerInformationToLocalDatabase(HashMap<String ,String> buyer){
+        SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(MainActivity.this);
+        SQLiteDatabase sqLiteDatabase = sqlBuyerdatabasehelper.getWritableDatabase();
+        sqlBuyerdatabasehelper.updateBuyerLocalDevice(buyer, sqLiteDatabase);
+        Log.d("tontracker", "Buyer information sent to local database");
+        sqlBuyerdatabasehelper.close();
+
     }
 
 }
