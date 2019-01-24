@@ -54,7 +54,7 @@ public class FarmerListAdapter extends BaseAdapter {
         TextView output_farmer_name = convertView.findViewById(R.id.farmer_name);
         TextView output_farmer_location = convertView.findViewById(R.id.farmer_location);
         ImageButton make_phone_call = convertView.findViewById(R.id.call_farmer);
-        Button create_sale = convertView.findViewById(R.id.make_sale);
+        final Button create_sale = convertView.findViewById(R.id.make_sale);
 
         output_farmer_name.setText(farmers.get(position).getFarmer_name());
         output_farmer_location.setText(farmers.get(position).getFarmer_location());
@@ -84,6 +84,8 @@ public class FarmerListAdapter extends BaseAdapter {
         create_sale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CreateSaleDialog createSaleDialog = new CreateSaleDialog();
+                createSaleDialog.show();
                 Log.i("Second", farmers.get(position).getFarmer_name());
             }
         });

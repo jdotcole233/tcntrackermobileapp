@@ -33,7 +33,6 @@ public class FarmerProfiles extends AppCompatActivity {
     private FarmerListAdapter farmerListAdapter;
     private ArrayList<FarmerModel> farmersOutput;
     private DrawerLayout mydrawer;
-    BroadcastReceiver broadcastReceiver;
 
 
     @Override
@@ -57,17 +56,6 @@ public class FarmerProfiles extends AppCompatActivity {
         farmer_list.setAdapter(farmerListAdapter);
 
 
-
-        //receive broadcast message after application successfully suynchronize unto the internet
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //send notification to user after the information has been sync
-
-                Log.d("tontracker", "Sync Message recieved");
-                readFromLocalDeviceDatabase();
-            }
-        };
 
 
 
@@ -158,15 +146,5 @@ public class FarmerProfiles extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        registerReceiver(broadcastReceiver, new IntentFilter(FarmerContract.UPDATE_APPLICATION));
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(broadcastReceiver);
-    }
 }

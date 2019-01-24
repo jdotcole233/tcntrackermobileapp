@@ -1,8 +1,12 @@
 package com.example.khoby.tcntracker;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,9 +17,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
+import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkMonitoring;
+import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkService;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -25,21 +33,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
+
+import static com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkService.isNetworkConnectionAvailable;
 
 @SuppressLint("RestrictedApi")
 
 public class Dashboard extends AppCompatActivity {
 
     private DrawerLayout mydrawer;
+    TonTrackerNetworkMonitoring tonTrackerNetworkMonitoring;
+    IntentFilter intentFilter;
+    TextView dayanddatedisplay;
+    ImageView connection_status;
+    LocalDate localDate;
 
+
+    @TargetApi(Build.VERSION_CODES.O)
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
         final PersistentCookieStore myCookieData = new PersistentCookieStore(Dashboard.this);
+        String [] months = {"January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        String [] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            localDate = LocalDate.now();
+        }
+
+
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -51,6 +78,15 @@ public class Dashboard extends AppCompatActivity {
 
         mydrawer = findViewById(R.id.navigation_drawer);
         NavigationView navigationView = findViewById(R.id.dashboard_navigation);
+        tonTrackerNetworkMonitoring = new TonTrackerNetworkMonitoring();
+        intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        dayanddatedisplay = findViewById(R.id.dayanddate);
+        connection_status = findViewById(R.id.connectionstate);
+        dayanddatedisplay.setText(days[localDate.getDayOfWeek().getValue()]+ ", " + months[localDate.getMonth().getValue()- 1] + " " + localDate.getDayOfMonth());
+
+
+
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -184,5 +220,29 @@ public class Dashboard extends AppCompatActivity {
 
 
 
+    }
+
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(tonTrackerNetworkMonitoring, intentFilter);
+        Boolean isNetworkOn = isNetworkConnectionAvailable(this);
+
+        if(isNetworkOn){
+            connection_status.setImageResource(R.drawable.ic_network_check_black_24dp);
+        } else {
+            connection_status.setImageResource(R.drawable.ic_unavailable_network_check_black_24dp);
+        }
+
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(tonTrackerNetworkMonitoring);
     }
 }

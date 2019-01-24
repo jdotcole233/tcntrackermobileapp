@@ -4,6 +4,8 @@
     <string name="create_farmer_profile">Farmers profile</string>
     <string name="create_farmer">Create Farmer</string>
     <string name="logout">Logout</string>
+    <string name="submit">Pay</string>
+    <string name="cancel">Cancel</string>
 
 
 

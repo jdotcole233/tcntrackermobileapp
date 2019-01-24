@@ -2,8 +2,10 @@ package com.example.khoby.tcntracker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
+import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkMonitoring;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -178,5 +181,7 @@ public class MainActivity extends AppCompatActivity {
         sqlBuyerdatabasehelper.close();
 
     }
+
+
 
 }

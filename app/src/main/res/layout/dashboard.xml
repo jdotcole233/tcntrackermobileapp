@@ -29,15 +29,102 @@
                 android:src="@drawable/tcntrackerpng"
                 />
         </android.support.v7.widget.Toolbar>
+        <LinearLayout
+            android:id="@+id/dateandconnectivitydisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            >
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/dateandtimecard"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="6dp"
+                app:cardBackgroundColor="#f7fafc"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="10dp"
+                app:contentPadding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/daystate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:fontFamily="@font/hind_semibold"
+                            android:paddingLeft="10dp"
+                            android:text="Today"
+                            android:textColor="@android:color/darker_gray"
+                            android:textFontWeight="bold"
+                            android:textSize="19sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/connectionstate"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_network_check_black_24dp"
+                            />
+                        <ImageView
+                            android:id="@+id/cashfruit"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_settings_black_24dp"
+                            />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/dayanddate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/hind_semibold"
+                        android:paddingLeft="10dp"
+                        android:text="Saturday, June 05"
+                        android:textAlignment="textStart"
+                        android:textColor="#32325d"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+
+        </LinearLayout>
 
       <LinearLayout
           android:id="@+id/widgetdisplay"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="225dp"
           android:orientation="horizontal"
           android:clipToPadding="false"
           android:gravity="center"
-          android:layout_marginTop="50dp"
+          android:layout_marginTop="0dp"
           android:padding="15dp"
           >
           <android.support.v7.widget.CardView
@@ -50,8 +137,8 @@
               android:layout_marginRight="10dp"
               android:layout_marginBottom="16dp"
               app:cardBackgroundColor="#f7fafc"
-              app:cardCornerRadius="10dp"
-              app:cardElevation="20dp"
+              app:cardCornerRadius="3dp"
+              app:cardElevation="10dp"
               app:contentPadding="10dp">
 
               <LinearLayout
@@ -63,16 +150,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/current_price_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Current price"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
-                            android:textSize="19sp"
+                            android:fontFamily="@font/hind_semibold"
+                            android:text="Current price"
                             android:textFontWeight="bold"
-                             />
+                            android:textSize="19sp" />
 
                         <View
                             android:layout_width="0dp"
@@ -92,7 +180,8 @@
                   <TextView
                       android:id="@+id/actual_price"
                       android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
+                      android:layout_height="83dp"
+                      android:fontFamily="@font/hind_semibold"
                       android:text="5.5"
                       android:textAlignment="center"
                       android:textColor="#32325d"
@@ -103,10 +192,10 @@
                       android:id="@+id/current_price_currency"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
+                      android:fontFamily="@font/hind_semibold"
                       android:text="GHS/KILO"
                       android:textAlignment="center"
-                      android:textSize="17sp"
-                      />
+                      android:textSize="17sp" />
               </LinearLayout>
           </android.support.v7.widget.CardView>
 
@@ -117,10 +206,10 @@
               android:layout_columnWeight="1"
               android:layout_rowWeight="1"
               android:layout_marginBottom="16dp"
-              android:layout_marginLeft="10dp"
+              android:layout_marginLeft="0dp"
               app:cardBackgroundColor="#f7fafc"
-              app:cardCornerRadius="10dp"
-              app:cardElevation="20dp"
+              app:cardCornerRadius="3dp"
+              app:cardElevation="10dp"
               app:contentPadding="10dp">
 
               <LinearLayout
@@ -131,14 +220,15 @@
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:orientation="horizontal">
+
                       <TextView
                           android:id="@+id/total_farmers_text"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
+                          android:fontFamily="@font/hind_semibold"
                           android:text="Total farmers"
                           android:textAlignment="center"
-                          android:textSize="19sp"
-                          />
+                          android:textSize="19sp" />
 
                       <View
                           android:layout_width="0dp"
@@ -159,6 +249,7 @@
                       android:id="@+id/total_farmers_count"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
+                      android:fontFamily="@font/hind_semibold"
                       android:text="17"
                       android:textAlignment="center"
                       android:textColor="#32325d"
@@ -182,25 +273,25 @@
         <LinearLayout
             android:id="@+id/widgetdisplaysecond"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="225dp"
+            android:layout_marginTop="-10dp"
             android:clipToPadding="false"
             android:gravity="center"
-            android:padding="15dp"
-            android:layout_marginTop="-10dp"
-            >
+            android:orientation="horizontal"
+            android:padding="15dp">
+
             <android.support.v7.widget.CardView
                 android:id="@+id/produce_count_card"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
-                android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
-                android:layout_marginBottom="16dp"
+                android:layout_columnWeight="1"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginBottom="16dp"
                 app:cardBackgroundColor="#f7fafc"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="20dp"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="10dp"
                 app:contentPadding="10dp">
 
                 <LinearLayout
@@ -212,14 +303,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/total_produce_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/hind_semibold"
                             android:text="Total weight"
                             android:textAlignment="center"
-                            android:textSize="19sp"
-                             />
+                            android:textSize="19sp" />
 
                         <View
                             android:layout_width="0dp"
@@ -230,8 +322,7 @@
                             android:id="@+id/total_produce_image"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/ic_pie_chart_black_24dp"
-                            />
+                            android:src="@drawable/ic_pie_chart_black_24dp" />
 
                     </LinearLayout>
 
@@ -240,6 +331,7 @@
                         android:id="@+id/total_produce_count"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/hind_semibold"
                         android:text="54"
                         android:textAlignment="center"
                         android:textColor="#32325d"
@@ -263,31 +355,33 @@
                 android:id="@+id/produce_count_card1"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
-                android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_marginLeft="0dp"
                 android:layout_marginBottom="16dp"
-                android:layout_marginLeft="10dp"
                 app:cardBackgroundColor="#f7fafc"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="20dp"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="10dp"
                 app:contentPadding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/total_produce_text1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/hind_semibold"
                             android:text="Average price"
                             android:textAlignment="center"
-                            android:textSize="19sp"
-                             />
+                            android:textSize="19sp" />
 
                         <View
                             android:layout_width="0dp"
@@ -298,8 +392,7 @@
                             android:id="@+id/total_produce1_image"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/ic_bubble_chart_black_24dp"
-                            />
+                            android:src="@drawable/ic_bubble_chart_black_24dp" />
 
                     </LinearLayout>
 
@@ -308,6 +401,7 @@
                         android:id="@+id/total_produce_count1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/hind_semibold"
                         android:text="54"
                         android:textAlignment="center"
                         android:textColor="#32325d"
