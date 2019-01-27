@@ -33,6 +33,8 @@ public class FarmerProfiles extends AppCompatActivity {
     private FarmerListAdapter farmerListAdapter;
     private ArrayList<FarmerModel> farmersOutput;
     private DrawerLayout mydrawer;
+    private Integer buyer_id;
+    private Integer company_id;
 
 
     @Override
@@ -52,7 +54,9 @@ public class FarmerProfiles extends AppCompatActivity {
         final PersistentCookieStore myCookieData = new PersistentCookieStore(this);
         farmersOutput = new ArrayList<>();
         readFromLocalDeviceDatabase();
-        farmerListAdapter = new FarmerListAdapter(this, farmersOutput, 2.0);
+        buyer_id = 1;
+        company_id = 1;
+        farmerListAdapter = new FarmerListAdapter(this, farmersOutput, 2.0, buyer_id, company_id);
         farmer_list.setAdapter(farmerListAdapter);
 
 
@@ -128,9 +132,18 @@ public class FarmerProfiles extends AppCompatActivity {
     public void readFromLocalDeviceDatabase(){
         SQLDatabasehelper sqlDatabasehelper = new SQLDatabasehelper(this);
         SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getReadableDatabase();
+        SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
+
         int count_id = 0;
 
         Cursor cursor = sqlDatabasehelper.readFromDeviceDatabase(sqLiteDatabase);
+        Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
+
+        while (buyerCursor.moveToFirst()){
+            buyer_id = Integer.parseInt(buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID)));
+            company_id = Integer.parseInt(buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID)));
+        }
+
         while (cursor.moveToNext()){
             String fullName = cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_FIRST_NAME)) + " " +
                     cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_OTHER_NAME)) + " " +
@@ -142,6 +155,8 @@ public class FarmerProfiles extends AppCompatActivity {
             farmersOutput.add(new FarmerModel(count_id, fullName, farmerLocation, farmerPhone));
         }
         cursor.close();
+        buyerCursor.close();
+        sqlBuyerdatabasehelper.close();
         sqlDatabasehelper.close();
 
     }
