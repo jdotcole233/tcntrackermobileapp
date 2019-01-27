@@ -5,6 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="#FFFF"
+    android:paddingBottom="15dp"
     >
 
     <ImageView
@@ -14,15 +16,18 @@
         android:background="@color/colorPrimaryDark"
         />
     <TextView
-        android:id="@+id/sale_amount"
+        android:id="@+id/sale_display_amount"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="GHC 34"
         android:gravity="center"
         android:textSize="45dp"
         android:textFontWeight="bold"
+        android:fontFamily="sans-serif"
+        android:textColor="#FF00"
         />
     <EditText
+        android:id="@+id/sale_input_amount"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentStart="true"
@@ -36,7 +41,37 @@
         android:textAlignment="center"
         android:inputType="number"
         />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    >
 
+    <Button
+        android:id="@+id/cancel_btn"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/circleintrobackground"
+        android:text="Cancel"
+        android:fontFamily="sans-serif"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        />
+
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:text="Submit"
+        android:background="@drawable/circleintrobackground"
+        android:fontFamily="sans-serif"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        />
+</LinearLayout>
 
 
 </LinearLayout>

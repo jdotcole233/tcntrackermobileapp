@@ -82,7 +82,7 @@ public class Dashboard extends AppCompatActivity {
         intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         dayanddatedisplay = findViewById(R.id.dayanddate);
         connection_status = findViewById(R.id.connectionstate);
-        dayanddatedisplay.setText(days[localDate.getDayOfWeek().getValue()]+ ", " + months[localDate.getMonth().getValue()- 1] + " " + localDate.getDayOfMonth());
+        dayanddatedisplay.setText(localDate.getDayOfWeek()+ ", " + localDate.getMonth() + " " + localDate.getDayOfMonth());
 
 
 

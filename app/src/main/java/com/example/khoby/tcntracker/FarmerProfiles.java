@@ -52,7 +52,7 @@ public class FarmerProfiles extends AppCompatActivity {
         final PersistentCookieStore myCookieData = new PersistentCookieStore(this);
         farmersOutput = new ArrayList<>();
         readFromLocalDeviceDatabase();
-        farmerListAdapter = new FarmerListAdapter(this, farmersOutput);
+        farmerListAdapter = new FarmerListAdapter(this, farmersOutput, 2.0);
         farmer_list.setAdapter(farmerListAdapter);
 
 
