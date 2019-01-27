@@ -15,6 +15,10 @@
         <item> Female </item>
     </string-array>
 
+    <string-array name="survey">
+        <item>Field Data</item>
+    </string-array>
+
 
     <!--Temporary location list // fetch dynamic location from database based on the
       area of operation by company

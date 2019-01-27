@@ -4,12 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -66,17 +68,39 @@ public class FarmerListAdapter extends BaseAdapter {
         TextView output_farmer_name = convertView.findViewById(R.id.farmer_name);
         TextView output_farmer_location = convertView.findViewById(R.id.farmer_location);
         ImageButton make_phone_call = convertView.findViewById(R.id.call_farmer);
+        CardView farmer_card = convertView.findViewById(R.id.farmer_list_cardview);
         final Button create_sale = convertView.findViewById(R.id.make_sale);
 
         output_farmer_name.setText(farmers.get(position).getFarmer_name());
         output_farmer_location.setText(farmers.get(position).getFarmer_location());
 
-//        convertView.findViewById(R.id.call_farmer).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.i("Clicked", farmers.get(position).getFarmer_id().toString());
-//            }
-//        });
+
+        //Long press event to collect farmer field data
+        farmer_card.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.d("tontracker", "Long click detected");
+                AlertDialog.Builder alertdialogbuilder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    alertdialogbuilder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    alertdialogbuilder = new AlertDialog.Builder(context);
+                }
+
+                alertdialogbuilder.setTitle("Survey Menu").setItems(R.array.survey, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = alertdialogbuilder.create();
+                dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
+                return false;
+            }
+        });
+        //End of long press event call
+
 
         make_phone_call.setOnClickListener(new View.OnClickListener() {
             @Override
