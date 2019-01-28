@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
 import com.example.khoby.tcntracker.Database.SQLDatabasehelper;
+import com.example.khoby.tcntracker.Database.SQLSaledatabasehelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -33,12 +34,16 @@ public class TonTrackerNetworkMonitoring extends BroadcastReceiver {
             final  SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(context);
             final SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getWritableDatabase();
             final SQLiteDatabase buyersqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
+            final SQLSaledatabasehelper sqlSaledatabasehelper = new SQLSaledatabasehelper(context);
 
             AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+
             RequestParams requestParams = new RequestParams();
+            RequestParams salesrequestParams = new RequestParams();
 
             Cursor cursor = sqlDatabasehelper.readFromDeviceDatabase(sqLiteDatabase);
             Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(buyersqLiteDatabase);
+            Cursor salesCursor = sqlSaledatabasehelper.readSalesData(sqLiteDatabase);
 
 
             while (cursor.moveToNext() && buyerCursor.moveToFirst()){
@@ -94,6 +99,52 @@ public class TonTrackerNetworkMonitoring extends BroadcastReceiver {
 
 //            sqlDatabasehelper.close();
 //            sqlBuyerdatabasehelper.close();
+
+
+            while (salesCursor.moveToNext()){
+                int sync_status = salesCursor.getInt(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry.COLUMN_NAME_SYNC_STATUS));
+
+                if (sync_status == FarmerContract.SYNC_STATUS_FAILED){
+                    salesrequestParams.add("unit_price", String.valueOf(salesCursor.getDouble(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry.COLUMN_NAME_UNIT_PRICE))));
+                    salesrequestParams.add("total_weight", String.valueOf(salesCursor.getDouble(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry.COLUMN_NAME_WEIGHT))));
+                    salesrequestParams.add("total_amount_paid", String.valueOf(salesCursor.getDouble(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry.COLUMN_NAME_TOTAL_AMOUNT_PAID))) );
+                    salesrequestParams.add("buyer_id", String.valueOf(salesCursor.getInt(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry.COLUMN_BUYER_ID))));
+                    salesrequestParams.add("company_id", String.valueOf(salesCursor.getInt(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry.COLUMN_COMPANY_ID))));
+                    salesrequestParams.add("phone_number", salesCursor.getString(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry.COLUMN_NAME_PHONE_NUMBER)));
+
+                    final String sales_id = String.valueOf(salesCursor.getInt(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry._ID)));
+
+                    asyncHttpClient.post("", salesrequestParams, new JsonHttpResponseHandler(){
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            super.onSuccess(statusCode, headers, response);
+                            Log.d("tontracker", "Sales response is back");
+
+                            try {
+                                String serverResponse = response.getString("response");
+
+                                if (serverResponse.equals("SUCCESSFUL")){
+                                    sqlSaledatabasehelper.updateSaleTable(sales_id, FarmerContract.SYNC_STATUS_SUCCESS, sqLiteDatabase);
+                                    context.sendBroadcast(new Intent(FarmerContract.UPDATE_APPLICATION));
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            super.onFailure(statusCode, headers, throwable, errorResponse);
+                            Log.d("tontracker", "Error from creating sales");
+                        }
+                    });
+                }
+            }
+
+
+
 
         }
     }

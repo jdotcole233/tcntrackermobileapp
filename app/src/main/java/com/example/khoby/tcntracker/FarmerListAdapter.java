@@ -25,8 +25,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLSaledatabasehelper;
 import com.example.khoby.tcntracker.Model.FarmerModel;
+import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class FarmerListAdapter extends BaseAdapter {
     LayoutInflater inflater;
     private  Integer buyerID;
     private  Integer companyID;
+    private  String phone_number;
 
     public FarmerListAdapter(FarmerProfiles context, ArrayList<FarmerModel> farmers, Double current_price, Integer buyerID, Integer companyID) {
         this.context = context;
@@ -83,7 +86,7 @@ public class FarmerListAdapter extends BaseAdapter {
 
         output_farmer_name.setText(farmers.get(position).getFarmer_name());
         output_farmer_location.setText(farmers.get(position).getFarmer_location());
-
+        phone_number = farmers.get(position).getFarmer_phone();
 
         //Long press event to collect farmer field data
         farmer_card.setOnLongClickListener(new View.OnLongClickListener() {
@@ -178,22 +181,31 @@ public class FarmerListAdapter extends BaseAdapter {
         view.findViewById(R.id.submit_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 SQLSaledatabasehelper sqlSaledatabasehelper = new SQLSaledatabasehelper(context);
                 SQLiteDatabase sqLiteDatabase = sqlSaledatabasehelper.getWritableDatabase();
                 Date date = new Date();
                 long time = date.getTime();
                 Timestamp timestamp = new Timestamp(time);
-
                 HashMap<String, String> sale_vales = new HashMap<>();
                 sale_vales.put("company_id", companyID.toString());
                 sale_vales.put("buyer_id", buyerID.toString());
                 sale_vales.put("unit_price", String.valueOf(current_price));
                 sale_vales.put("total_amount_paid", String.valueOf((current_price * amount[0])));
+                sale_vales.put("phone_number", phone_number);
                 sale_vales.put("total_weight", String.valueOf(amount[0]));
                 sale_vales.put("created_at", String.valueOf(timestamp));
 
-                sqlSaledatabasehelper.populateSaleTable(sale_vales, sqLiteDatabase);
-                Log.d("tontracker", "successfully created a sale");
+
+                if (TonTrackerNetworkService.isNetworkConnectionAvailable(context)){
+                    sqlSaledatabasehelper.populateSaleTable(sale_vales, FarmerContract.SYNC_STATUS_SUCCESS,sqLiteDatabase);
+                    Log.d("tontracker", "successfully created a sale");
+
+                }else{
+                    sqlSaledatabasehelper.populateSaleTable(sale_vales, FarmerContract.SYNC_STATUS_FAILED,sqLiteDatabase);
+                    Log.d("tontracker", "successfully created a sale offline");
+                }
+
 
                 Log.d("tontracker", amount[0].toString());
             }

@@ -87,7 +87,6 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
         String selection = "_id = ?";//FarmerContract.FarmerDatabaseEntry.TABLE_NAME + " Like ?";
         String [] selction_args = {farmer_id};
 
-
         database.update(FarmerContract.FarmerDatabaseEntry.TABLE_NAME, contentValues, selection, selction_args);
     }
 }

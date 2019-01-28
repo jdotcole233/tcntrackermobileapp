@@ -47,6 +47,8 @@ public class FarmerContract {
         public static final String COLUMN_NAME_WEIGHT = "total_weight";
         public static final String COLUMN_NAME_TOTAL_AMOUNT_PAID = "total_amount_paid";
         public static final String COLUMN_BUYER_ID = "buyer_id";
+        public static final String COLUMN_NAME_SYNC_STATUS = "sync_status";
+        public static final String COLUMN_NAME_PHONE_NUMBER = "phone_number";
         public static final String COLUMN_COMPANY_ID = "company_id";
         public static final String COLUMN_CREATED_AT = "created_at";
     }
