@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +16,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
@@ -36,6 +39,8 @@ public class FarmerProfiles extends AppCompatActivity {
     private DrawerLayout mydrawer;
     private Integer buyer_id;
     private Integer company_id;
+    SQLBuyerdatabasehelper sqlBuyerdatabasehelper;
+    SQLiteDatabase sqLiteDatabase;
 
 
     @Override
@@ -47,7 +52,7 @@ public class FarmerProfiles extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         farmer_list = findViewById(R.id.farmer_list);
@@ -59,6 +64,8 @@ public class FarmerProfiles extends AppCompatActivity {
         company_id = 1;
         farmerListAdapter = new FarmerListAdapter(this, farmersOutput, 2.0, buyer_id, company_id);
         farmer_list.setAdapter(farmerListAdapter);
+        sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
+        sqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
 
 
 
@@ -111,8 +118,20 @@ public class FarmerProfiles extends AppCompatActivity {
                 return false;
             }
         });
+        updateUI();
     }
 
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home :
+                mydrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 //    public static ArrayList<FarmerModel> getFarmers(){
 //            ArrayList<FarmerModel> farmerModels = new ArrayList<>();
 //
@@ -178,6 +197,25 @@ public class FarmerProfiles extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         farmerListAdapter.notifyDataSetChanged();
+        updateUI();
+
+    }
+
+
+    public void updateUI(){
+        NavigationView navigationView = findViewById(R.id.dashboard_navigation);
+        View view = navigationView.getHeaderView(0);
+        TextView buyer_name  = view.findViewById(R.id.buyername);
+
+        Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
+        String buyerName = "";
+
+        if (buyerCursor.moveToFirst()){
+            buyerName =  buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_FIRST_NAME));
+            buyerName += " " + buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_LAST_NAME));
+        }
+
+        buyer_name.setText(buyerName);
 
     }
 }

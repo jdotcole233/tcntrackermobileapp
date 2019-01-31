@@ -93,7 +93,7 @@ public class Dashboard extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         mydrawer = findViewById(R.id.navigation_drawer);
@@ -273,9 +273,9 @@ public class Dashboard extends AppCompatActivity {
         TextView total_farmers = findViewById(R.id.total_farmers_count);
         TextView total_weight = findViewById(R.id.total_produce);
         TextView unsynchronize = findViewById(R.id.clouduploadcount);
-//        NavigationView navigationView = findViewById(R.id.dashboard_navigation);
-//        View view = findViewById(R.id.headerView);
-//        TextView buyer_name  = findViewById(R.id.buyername);
+        NavigationView navigationView = findViewById(R.id.dashboard_navigation);
+        View view = navigationView.getHeaderView(0);
+        TextView buyer_name  = view.findViewById(R.id.buyername);
 
         Cursor cursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
         Integer totalFamers = sqlDatabasehelper.getTotalFarmers(farmerDatabase);
@@ -294,6 +294,6 @@ public class Dashboard extends AppCompatActivity {
         total_weight.setText(totalWeight.toString());
         total_farmers.setText(totalFamers.toString());
         unsynchronize.setText(totalUnsync.toString());
-//        buyer_name.setText(buyerName);
+        buyer_name.setText(buyerName);
     }
 }

@@ -15,6 +15,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     buyerLoginData.put("email", userEmail);
                     buyerLoginData.put("password", userPassword);
 
-
+                    ProgressBar progressBar = new ProgressBar(MainActivity.this);
                     buyerRequest.post(FarmerContract.LOGIN_URL, buyerLoginData, new JsonHttpResponseHandler(){
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

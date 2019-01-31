@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
@@ -60,6 +62,8 @@ public class CreateFarmerProfile extends AppCompatActivity {
     private String selectedGender;
     private String selectedLocation;
     private Integer selectedLocationID;
+    SQLBuyerdatabasehelper sqlBuyerdatabasehelper;
+    SQLiteDatabase sqLiteDatabase;
 
 
 
@@ -81,7 +85,7 @@ public class CreateFarmerProfile extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         final PersistentCookieStore myCookieData = new PersistentCookieStore(this);
         localcommunity = new HashMap<>();
@@ -89,6 +93,8 @@ public class CreateFarmerProfile extends AppCompatActivity {
         List<String> communityname = new ArrayList<>();
         communityname.add("Select Community");
         JSONArray jsonArray = new JSONArray();
+        sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
+        sqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
 
 
 
@@ -253,7 +259,17 @@ public class CreateFarmerProfile extends AppCompatActivity {
             }
         });
 
+        updateUI();
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home :
+                mydrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //get current locations and fill an ArrayList
@@ -307,6 +323,11 @@ public class CreateFarmerProfile extends AppCompatActivity {
 */
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateUI();
+    }
 
     //Validate farmer forms to ensure mandatory parts are filled
     public boolean isFormFilled(){
@@ -349,8 +370,7 @@ public class CreateFarmerProfile extends AppCompatActivity {
     public void saveDataToServerDatabase(final HashMap<String, String> farmerdata){
 
         boolean isConnectionAvailable = TonTrackerNetworkService.isNetworkConnectionAvailable(this);
-        SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
-        SQLiteDatabase sqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
+
 
         Cursor cursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
         String buyer_id = null;
@@ -416,5 +436,23 @@ public class CreateFarmerProfile extends AppCompatActivity {
         }
     }
 
+
+
+    public void updateUI(){
+        NavigationView navigationView = findViewById(R.id.dashboard_navigation);
+        View view = navigationView.getHeaderView(0);
+        TextView buyer_name  = view.findViewById(R.id.buyername);
+
+        Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
+        String buyerName = "";
+
+        if (buyerCursor.moveToFirst()){
+            buyerName =  buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_FIRST_NAME));
+            buyerName += " " + buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_LAST_NAME));
+        }
+
+        buyer_name.setText(buyerName);
+
+    }
 
 }
