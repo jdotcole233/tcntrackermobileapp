@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 public class SQLDatabasehelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String CREATE_TABLE = "CREATE TABLE " + FarmerContract.FarmerDatabaseEntry.TABLE_NAME
+    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + FarmerContract.FarmerDatabaseEntry.TABLE_NAME
             + " (" + FarmerContract.FarmerDatabaseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_FIRST_NAME + " TEXT," +
             FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_OTHER_NAME + " TEXT," +
@@ -25,6 +26,8 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
             FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_CREATED_AT + " TIMESTAMP)";
 
     private static final String DELETE_TABLE  = "DROP TABLE IF EXISTS " + FarmerContract.FarmerDatabaseEntry.TABLE_NAME;
+    private static final  String CHECK_IF_TABLE_EXISTS = "SELECT * FROM sqlite_master WHERE " +
+            "type='table' AND name='" + FarmerContract.FarmerDatabaseEntry.TABLE_NAME + "'";
 
 
 
@@ -36,6 +39,12 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+//        Cursor checktable = db.rawQuery(CHECK_IF_TABLE_EXISTS, null);
+//
+//        if (checktable != null){
+//            Log.d("tontracker", "table already exists");
+//            return;
+//        }
         db.execSQL(CREATE_TABLE);
     }
 
@@ -89,4 +98,15 @@ public class SQLDatabasehelper extends SQLiteOpenHelper {
 
         database.update(FarmerContract.FarmerDatabaseEntry.TABLE_NAME, contentValues, selection, selction_args);
     }
+
+    public Integer getTotalFarmers(SQLiteDatabase database){
+        String query = "SELECT * FROM " + FarmerContract.FarmerDatabaseEntry.TABLE_NAME;
+        return  database.rawQuery(query, null).getCount();
+    }
+
+    public Integer getUnsynchronizedFarmers(SQLiteDatabase database){
+        String query = "SELECT * FROM " + FarmerContract.FarmerDatabaseEntry.TABLE_NAME + " WHERE sync_status = 0";
+        return database.rawQuery(query, null).getCount();
+    }
+
 }

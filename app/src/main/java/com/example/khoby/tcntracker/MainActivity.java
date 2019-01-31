@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +15,13 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
+import com.example.khoby.tcntracker.Database.SQLDatabasehelper;
+import com.example.khoby.tcntracker.Database.SQLSaledatabasehelper;
 import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkMonitoring;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -26,6 +30,7 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.net.CookieStore;
 import java.util.HashMap;
@@ -42,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText buyerEmail;
     private EditText buyerPassword;
     private Button loginButton;
+    SQLBuyerdatabasehelper sqlBuyerdatabasehelper;
+    SQLSaledatabasehelper sqlSaledatabasehelper;
+    SQLDatabasehelper sqlDatabasehelper;
+    SQLiteDatabase sqLiteDatabase;
+    SQLiteDatabase salesDatabase;
+    SQLiteDatabase farmerssqlDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +66,20 @@ public class MainActivity extends AppCompatActivity {
         buyerPassword = findViewById(R.id.buyerpassword);
         loginButton = findViewById(R.id.loginbutton);
         final PersistentCookieStore myCookieData = new PersistentCookieStore(MainActivity.this);
+
+        sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(MainActivity.this);
+        sqlDatabasehelper = new SQLDatabasehelper(MainActivity.this);
+        sqlSaledatabasehelper = new SQLSaledatabasehelper(MainActivity.this);
+
+
+        sqLiteDatabase = sqlBuyerdatabasehelper.getWritableDatabase();
+        farmerssqlDatabase = sqlDatabasehelper.getWritableDatabase();
+        salesDatabase = sqlSaledatabasehelper.getWritableDatabase();
+
+        sqlDatabasehelper.onCreate(farmerssqlDatabase);
+
+        sqlBuyerdatabasehelper.onCreate(sqLiteDatabase);
+        sqlSaledatabasehelper.onCreate(salesDatabase);
 
         if (myCookieData.getCookies().isEmpty()){
 
@@ -126,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+
     }
 
 
@@ -156,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
             responseData.put("last_name", jsonObject.getString("last_name"));
             responseData.put("gender", jsonObject.getString("gender"));
             responseData.put("company_id", String.valueOf(jsonObject.getInt("companiescompany_id")));
+            responseData.put("current_price", String.valueOf(obj.getDouble("current_price")));
             responseData.put("buyer_id", String.valueOf(jsonObject.getInt("buyer_id")));
             saveBuyerInformationToLocalDatabase(responseData);
 
@@ -173,14 +200,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveBuyerInformationToLocalDatabase(HashMap<String ,String> buyer){
-        SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(MainActivity.this);
-        SQLiteDatabase sqLiteDatabase = sqlBuyerdatabasehelper.getWritableDatabase();
-        sqlBuyerdatabasehelper.onCreate(sqLiteDatabase);
+
+
         sqlBuyerdatabasehelper.updateBuyerLocalDevice(buyer, sqLiteDatabase);
         Log.d("tontracker", "Buyer information sent to local database");
         sqlBuyerdatabasehelper.close();
 
     }
+
 
 
 

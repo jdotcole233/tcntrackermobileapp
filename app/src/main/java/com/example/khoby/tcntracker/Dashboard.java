@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -14,14 +15,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
 import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
+import com.example.khoby.tcntracker.Database.SQLDatabasehelper;
+import com.example.khoby.tcntracker.Database.SQLSaledatabasehelper;
 import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkMonitoring;
 import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkService;
 import com.loopj.android.http.AsyncHttpClient;
@@ -33,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLData;
 import java.time.LocalDate;
 
 import cz.msebera.android.httpclient.Header;
@@ -51,6 +57,13 @@ public class Dashboard extends AppCompatActivity {
     TextView dayanddatedisplay;
     ImageView connection_status;
     LocalDate localDate;
+    SQLBuyerdatabasehelper sqlBuyerdatabasehelper;
+    SQLDatabasehelper sqlDatabasehelper;
+    SQLSaledatabasehelper sqlSaledatabasehelper;
+
+    SQLiteDatabase sqLiteDatabase;
+    SQLiteDatabase farmerDatabase;
+    SQLiteDatabase salesDatabase;
 
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -65,6 +78,13 @@ public class Dashboard extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             localDate = LocalDate.now();
         }
+        sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
+        sqlDatabasehelper = new SQLDatabasehelper(this);
+        sqlSaledatabasehelper = new SQLSaledatabasehelper(this);
+
+        sqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
+        farmerDatabase = sqlDatabasehelper.getReadableDatabase();
+        salesDatabase = sqlSaledatabasehelper.getWritableDatabase();
 
 
 
@@ -135,7 +155,7 @@ public class Dashboard extends AppCompatActivity {
         }); //end of navigation drawer
 
         saveCommunitiesOnDevice();
-
+        updateUIviews();
 
 
 
@@ -236,7 +256,7 @@ public class Dashboard extends AppCompatActivity {
         } else {
             connection_status.setImageResource(R.drawable.ic_unavailable_network_check_black_24dp);
         }
-
+        updateUIviews();
     }
 
 
@@ -244,5 +264,36 @@ public class Dashboard extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         unregisterReceiver(tonTrackerNetworkMonitoring);
+    }
+
+
+    public void updateUIviews(){
+
+        TextView current_price = findViewById(R.id.actual_price);
+        TextView total_farmers = findViewById(R.id.total_farmers_count);
+        TextView total_weight = findViewById(R.id.total_produce);
+        TextView unsynchronize = findViewById(R.id.clouduploadcount);
+//        NavigationView navigationView = findViewById(R.id.dashboard_navigation);
+//        View view = findViewById(R.id.headerView);
+//        TextView buyer_name  = findViewById(R.id.buyername);
+
+        Cursor cursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
+        Integer totalFamers = sqlDatabasehelper.getTotalFarmers(farmerDatabase);
+        Double totalWeight = sqlSaledatabasehelper.getTotalWeight(salesDatabase);
+        Integer totalUnsync =  sqlDatabasehelper.getUnsynchronizedFarmers(farmerDatabase);
+        String currentPrice = "";
+        String buyerName = "";
+
+        if (cursor.moveToFirst()){
+            currentPrice = String.valueOf(cursor.getDouble(cursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_CURRENT_PRICE)));
+            buyerName =  cursor.getString(cursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_FIRST_NAME));
+            buyerName += " " + cursor.getString(cursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_LAST_NAME));
+        }
+
+        current_price.setText(currentPrice);
+        total_weight.setText(totalWeight.toString());
+        total_farmers.setText(totalFamers.toString());
+        unsynchronize.setText(totalUnsync.toString());
+//        buyer_name.setText(buyerName);
     }
 }

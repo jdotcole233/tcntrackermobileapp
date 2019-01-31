@@ -133,7 +133,7 @@
               android:layout_height="180dp"
               android:layout_rowWeight="1"
               android:layout_columnWeight="1"
-              android:layout_marginLeft="10dp"
+              android:layout_marginLeft="0dp"
               android:layout_marginRight="10dp"
               android:layout_marginBottom="16dp"
               app:cardBackgroundColor="#f7fafc"
@@ -286,7 +286,7 @@
                 android:layout_height="180dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="0dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="16dp"
                 app:cardBackgroundColor="#f7fafc"
@@ -328,7 +328,7 @@
 
 
                     <TextView
-                        android:id="@+id/total_produce_count"
+                        android:id="@+id/total_produce"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/hind_semibold"
@@ -379,9 +379,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/hind_semibold"
-                            android:text="Average price"
+                            android:text="Unsynchronized"
                             android:textAlignment="center"
-                            android:textSize="19sp" />
+                            android:textSize="17sp" />
 
                         <View
                             android:layout_width="0dp"
@@ -398,7 +398,7 @@
 
 
                     <TextView
-                        android:id="@+id/total_produce_count1"
+                        android:id="@+id/clouduploadcount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/hind_semibold"
@@ -427,14 +427,14 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/dashboard_navigation"
-        android:layout_width="230dp"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/design_default_color_primary_dark"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/slider_header"
-        app:itemIconTint="@android:color/background_light"
-        app:itemTextColor="@android:color/background_light"
+        app:itemIconTint="#aaaaaa"
+        app:itemTextColor="#aaaaaa"
+        android:background="#1e2531"
         app:menu="@menu/sliding_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

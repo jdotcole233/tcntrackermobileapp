@@ -8,10 +8,12 @@ public class FarmerContract {
     public static  final int SYNC_STATUS_FAILED = 0;
     public static final String DATABASE_NAME = "tontrackerdatabase";
     public static final String BUYER_DATABASE_NAME = "buyerdatabse";
+    public static final String SALE_DATABASE_NAME = "saledatabse";
 
     public static  final String LOGIN_URL = "http://192.168.100.7:8000/loginfrommobile";
     public static final String REGISTER_FARMER_URL = "http://192.168.100.7:8000/registerFarmerFromMobile";
     public static final String LOCATION_URL = "http://192.168.100.7:8000/communities";
+    public static final  String TRANSACTIONS_URL = "http://192.168.100.7:8000/farmertransactions";
     public static  final String UPDATE_APPLICATION = "com.example.tcntracker.updateapplication";
 
     private  FarmerContract(){ }
@@ -37,6 +39,7 @@ public class FarmerContract {
         public static final String COLUMN_NAME_OTHER_NAME = "other_name";
         public static final String  COLUMN_NAME_LAST_NAME = "last_name";
         public static final String COLUMN_NAME_GENDER = "gender";
+        public static final String COLUMN_NAME_CURRENT_PRICE = "current_price";
         public static final String COLUMN_NAME_COMMPANY_ID = "company_id";
         public static final String COLUMN_NAME_BUYER_ID = "buyer_id";
     }

@@ -154,12 +154,12 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/dashboard_navigation"
-        android:layout_width="300dp"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/design_default_color_primary_dark"
-        app:itemIconTint="@android:color/background_light"
-        app:itemTextColor="@android:color/background_light"
+        app:itemIconTint="#aaaaaa"
+        app:itemTextColor="#aaaaaa"
+        android:background="#1e2531"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/slider_header"
         app:menu="@menu/sliding_drawer" />

@@ -336,10 +336,10 @@ public class CreateFarmerProfile extends AppCompatActivity {
 
 
     //save data to local database
-    public void saveDataToDeviceDatabase(HashMap<String, String> farmerdata){
+    public void saveDataToDeviceDatabase(HashMap<String, String> farmerdata, int sync_status){
         SQLDatabasehelper sqlDatabasehelper = new SQLDatabasehelper(this);
         SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getWritableDatabase();
-        sqlDatabasehelper.populateDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_FAILED,sqLiteDatabase);
+        sqlDatabasehelper.populateDeviceDatabase(farmerdata, sync_status,sqLiteDatabase);
         Log.d("tontracker", "Data saved successfully");
         sqlDatabasehelper.close();
     }
@@ -388,7 +388,7 @@ public class CreateFarmerProfile extends AppCompatActivity {
 
                         String responseFromServer = response.getString("response");
                         if(responseFromServer.equals("SUCCESSFUL")){
-                            saveDataToDeviceDatabase(farmerdata);
+                            saveDataToDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_SUCCESS);
                             Log.d("tontracker", "Saved to the server and local database");
                         }
 
@@ -401,18 +401,18 @@ public class CreateFarmerProfile extends AppCompatActivity {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    saveDataToDeviceDatabase(farmerdata);
+                    saveDataToDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_FAILED);
                     Log.d("tontracker", "Error encountered, but data has been saved to local device");
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     super.onFailure(statusCode, headers, responseString, throwable);
-                    Log.d("tontracker", responseString);
+                    Log.d("tontracker", "Failure response from create farmer " + responseString);
                 }
             });
         } else {
-            saveDataToDeviceDatabase(farmerdata);
+            saveDataToDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_FAILED);
         }
     }
 

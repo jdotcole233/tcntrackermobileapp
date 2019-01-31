@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
@@ -58,7 +59,6 @@ public class FarmerProfiles extends AppCompatActivity {
         company_id = 1;
         farmerListAdapter = new FarmerListAdapter(this, farmersOutput, 2.0, buyer_id, company_id);
         farmer_list.setAdapter(farmerListAdapter);
-
 
 
 
@@ -132,34 +132,52 @@ public class FarmerProfiles extends AppCompatActivity {
     public void readFromLocalDeviceDatabase(){
         SQLDatabasehelper sqlDatabasehelper = new SQLDatabasehelper(this);
         SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getReadableDatabase();
-        SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
+
+        SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(FarmerProfiles.this);
+        SQLiteDatabase buyerSqlDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
 
         int count_id = 0;
 
         Cursor cursor = sqlDatabasehelper.readFromDeviceDatabase(sqLiteDatabase);
-        Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
+        Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(buyerSqlDatabase);
 
-        while (buyerCursor.moveToFirst()){
+//        while (buyerCursor.moveToFirst()){
+//            buyer_id = Integer.parseInt(buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID)));
+//            company_id = Integer.parseInt(buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID)));
+//            break;
+//        }
+       // buyerSqlDatabase.close();
+
+        while (cursor.moveToNext() && buyerCursor.moveToFirst() ){
             buyer_id = Integer.parseInt(buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID)));
             company_id = Integer.parseInt(buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID)));
-        }
 
-        while (cursor.moveToNext()){
             String fullName = cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_FIRST_NAME)) + " " +
                     cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_OTHER_NAME)) + " " +
                     cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_LAST_NAME));
             String farmerLocation = cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_NAME));
 
             String farmerPhone = cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_PHONE_NUMBER));
+            Integer sync_status = cursor.getInt(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_SYNC_STATUS));
             count_id++;
-            farmersOutput.add(new FarmerModel(count_id, fullName, farmerLocation, farmerPhone));
+            if (sync_status.equals(FarmerContract.SYNC_STATUS_FAILED)){
+
+                farmersOutput.add(new FarmerModel(count_id, fullName, farmerLocation, farmerPhone, FarmerContract.SYNC_STATUS_FAILED));
+            }else{
+                farmersOutput.add(new FarmerModel(count_id, fullName, farmerLocation, farmerPhone, FarmerContract.SYNC_STATUS_SUCCESS));
+            }
         }
         cursor.close();
         buyerCursor.close();
-        sqlBuyerdatabasehelper.close();
-        sqlDatabasehelper.close();
+
+
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        farmerListAdapter.notifyDataSetChanged();
 
+    }
 }

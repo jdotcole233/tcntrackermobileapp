@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="@color/colorPrimaryDark"
+    android:background="#29303c"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:id="@+id/headerView"
+    >
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:srcCompat="@drawable/profilepicture" />
+        tools:srcCompat="@drawable/tcntrackerpng" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/buyername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-50dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="Baidoo Cole"
         android:textAlignment="textEnd"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-</LinearLayout>
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20sp"
+        />
+</RelativeLayout>

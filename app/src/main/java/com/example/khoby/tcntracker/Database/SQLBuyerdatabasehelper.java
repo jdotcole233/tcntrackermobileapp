@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -15,17 +16,20 @@ public class SQLBuyerdatabasehelper extends SQLiteOpenHelper {
 
 
 
-    private static final String CREATE_TABLE = "CREATE TABLE " + FarmerContract.BuyerDatabaseEntry.TABLE_NAME + " (" +
+    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + FarmerContract.BuyerDatabaseEntry.TABLE_NAME + " (" +
             FarmerContract.BuyerDatabaseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_FIRST_NAME + " TEXT," +
             FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_OTHER_NAME + " TEXT," +
             FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_LAST_NAME + " TEXT," +
             FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID + " INTEGER," +
+            FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_CURRENT_PRICE + " DECIMAL(10,2)," +
             FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID + " INTEGER," +
             FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_GENDER + " TEXT)";
 
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + FarmerContract.BuyerDatabaseEntry.TABLE_NAME;
     private static final String TRUNCATE_TABLE = "DELETE FROM " + FarmerContract.BuyerDatabaseEntry.TABLE_NAME;
+    private static final  String CHECK_IF_TABLE_EXISTS = "SELECT * FROM sqlite_master WHERE " +
+            "type='table' AND name='" + FarmerContract.BuyerDatabaseEntry.TABLE_NAME + "'";
 
 
     public SQLBuyerdatabasehelper(Context context) {
@@ -35,7 +39,14 @@ public class SQLBuyerdatabasehelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+//        Cursor checktable = db.rawQuery(CHECK_IF_TABLE_EXISTS, null);
+//
+//        if (checktable != null){
+//            Log.d("tontracker", "table already exists");
+//            return;
+//        }
         db.execSQL(CREATE_TABLE);
+
     }
 
     @Override
@@ -51,6 +62,7 @@ public class SQLBuyerdatabasehelper extends SQLiteOpenHelper {
         contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_LAST_NAME, buyerInformation.get("last_name"));
         contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_GENDER, buyerInformation.get("gender"));
         contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID, buyerInformation.get("buyer_id"));
+        contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_CURRENT_PRICE, buyerInformation.get("current_price"));
         contentValues.put(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID, buyerInformation.get("company_id"));
         database.insert(FarmerContract.BuyerDatabaseEntry.TABLE_NAME, null, contentValues);
     }
@@ -60,6 +72,7 @@ public class SQLBuyerdatabasehelper extends SQLiteOpenHelper {
                 FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_OTHER_NAME,
                 FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_LAST_NAME,
                 FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_GENDER,
+                FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_CURRENT_PRICE,
                 FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID,
                 FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID
         };

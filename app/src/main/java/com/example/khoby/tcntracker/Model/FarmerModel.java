@@ -1,18 +1,22 @@
 package com.example.khoby.tcntracker.Model;
 
+import android.widget.ImageView;
+
 public class FarmerModel {
 
     private Integer farmer_id;
     private String farmer_name;
     private  String farmer_location;
     private String farmer_phone;
-    private String sync_status;
+    private Integer sync_status;
+   // private ImageView imageView;
 
-    public FarmerModel(Integer farmer_id, String farmer_name, String farmer_location, String farmer_phone) {
+    public FarmerModel(Integer farmer_id, String farmer_name, String farmer_location, String farmer_phone, Integer sync_status) {
         this.farmer_id = farmer_id;
         this.farmer_name = farmer_name;
         this.farmer_location = farmer_location;
         this.farmer_phone = farmer_phone;
+        this.sync_status = sync_status;
     }
 
     public Integer getFarmer_id() {
@@ -45,5 +49,9 @@ public class FarmerModel {
 
     public void setFarmer_phone(String farmer_phone) {
         this.farmer_phone = farmer_phone;
+    }
+
+    public Integer getSync_status() {
+        return sync_status;
     }
 }

@@ -5,13 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.HashMap;
 
 public class SQLSaledatabasehelper extends SQLiteOpenHelper {
 
     private final static int DATABASE_VERSION = 1;
-    private static final String CREATE_TABLE = "CREATE TABLE " + FarmerContract.SaleDatabaseEntry.TABLE_NAME +
+    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + FarmerContract.SaleDatabaseEntry.TABLE_NAME +
             " (" + FarmerContract.SaleDatabaseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FarmerContract.SaleDatabaseEntry.COLUMN_BUYER_ID + " INTEGER," +
             FarmerContract.SaleDatabaseEntry.COLUMN_COMPANY_ID + " INTEGER," +
@@ -23,15 +24,25 @@ public class SQLSaledatabasehelper extends SQLiteOpenHelper {
 
             FarmerContract.SaleDatabaseEntry.COLUMN_CREATED_AT + " TIMESTAMP)";
     private static  final String DROP_TABLE = "DROP TABLE IF EXISTS " + FarmerContract.SaleDatabaseEntry.TABLE_NAME;
+    private static final  String CHECK_IF_TABLE_EXISTS = "SELECT * FROM sqlite_master WHERE " +
+            "type='table' AND name='" + FarmerContract.SaleDatabaseEntry.TABLE_NAME + "'";
 
     public SQLSaledatabasehelper(Context context){
-        super(context, FarmerContract.DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, FarmerContract.SALE_DATABASE_NAME, null, DATABASE_VERSION);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+//        Cursor checktable = db.rawQuery(CHECK_IF_TABLE_EXISTS, null);
+//
+//        if (checktable != null){
+//            Log.d("tontracker", "table already exists");
+//              return;
+//        }
         db.execSQL(CREATE_TABLE);
+
 
     }
 
@@ -76,10 +87,22 @@ public class SQLSaledatabasehelper extends SQLiteOpenHelper {
                 FarmerContract.SaleDatabaseEntry.COLUMN_NAME_UNIT_PRICE,
                 FarmerContract.SaleDatabaseEntry.COLUMN_NAME_TOTAL_AMOUNT_PAID,
                 FarmerContract.SaleDatabaseEntry.COLUMN_COMPANY_ID,
+                FarmerContract.SaleDatabaseEntry.COLUMN_NAME_SYNC_STATUS,
                 FarmerContract.SaleDatabaseEntry.COLUMN_BUYER_ID
         };
 
         return (database.query(FarmerContract.SaleDatabaseEntry.TABLE_NAME, column_names, null,null, null, null, null));
     }
 
+
+    public Double getTotalWeight(SQLiteDatabase database){
+        String query = "SELECT sum(total_weight) AS Total FROM " + FarmerContract.SaleDatabaseEntry.TABLE_NAME;
+        Double total = 0.0;
+        Log.d("tontracker", database.rawQuery(query,null).toString());
+        Cursor cursor = database.rawQuery(query,null);
+        if (cursor.moveToFirst()){
+            total = cursor.getDouble(cursor.getColumnIndex("Total"));
+        }
+        return total;
+    }
 }

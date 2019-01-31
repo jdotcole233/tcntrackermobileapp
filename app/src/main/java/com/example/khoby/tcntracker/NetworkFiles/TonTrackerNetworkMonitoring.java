@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.example.khoby.tcntracker.Database.FarmerContract;
@@ -35,15 +36,23 @@ public class TonTrackerNetworkMonitoring extends BroadcastReceiver {
             final SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getWritableDatabase();
             final SQLiteDatabase buyersqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
             final SQLSaledatabasehelper sqlSaledatabasehelper = new SQLSaledatabasehelper(context);
+            final SQLiteDatabase salesdatabase = sqlSaledatabasehelper.getWritableDatabase();
 
             AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
             RequestParams requestParams = new RequestParams();
             RequestParams salesrequestParams = new RequestParams();
 
+
+
             Cursor cursor = sqlDatabasehelper.readFromDeviceDatabase(sqLiteDatabase);
             Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(buyersqLiteDatabase);
-            Cursor salesCursor = sqlSaledatabasehelper.readSalesData(sqLiteDatabase);
+
+//            String checkTableExists = "SELECT * FROM sqlite_master WHERE name= 'farmer_transactions' and type='table'";
+//            SQLiteStatement table = sqLiteDatabase.compileStatement(checkTableExists);
+//            Long count = table.simpleQueryForLong();
+          //  Log.d("tontracker", "table size" + count);
+
 
 
             while (cursor.moveToNext() && buyerCursor.moveToFirst()){
@@ -100,6 +109,7 @@ public class TonTrackerNetworkMonitoring extends BroadcastReceiver {
 //            sqlDatabasehelper.close();
 //            sqlBuyerdatabasehelper.close();
 
+            Cursor salesCursor = sqlSaledatabasehelper.readSalesData(salesdatabase);
 
             while (salesCursor.moveToNext()){
                 int sync_status = salesCursor.getInt(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry.COLUMN_NAME_SYNC_STATUS));
@@ -114,7 +124,7 @@ public class TonTrackerNetworkMonitoring extends BroadcastReceiver {
 
                     final String sales_id = String.valueOf(salesCursor.getInt(salesCursor.getColumnIndex(FarmerContract.SaleDatabaseEntry._ID)));
 
-                    asyncHttpClient.post("", salesrequestParams, new JsonHttpResponseHandler(){
+                    asyncHttpClient.post(FarmerContract.TRANSACTIONS_URL, salesrequestParams, new JsonHttpResponseHandler(){
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             super.onSuccess(statusCode, headers, response);
@@ -124,8 +134,9 @@ public class TonTrackerNetworkMonitoring extends BroadcastReceiver {
                                 String serverResponse = response.getString("response");
 
                                 if (serverResponse.equals("SUCCESSFUL")){
-                                    sqlSaledatabasehelper.updateSaleTable(sales_id, FarmerContract.SYNC_STATUS_SUCCESS, sqLiteDatabase);
-                                    context.sendBroadcast(new Intent(FarmerContract.UPDATE_APPLICATION));
+                                    sqlSaledatabasehelper.updateSaleTable(sales_id, FarmerContract.SYNC_STATUS_SUCCESS, salesdatabase);
+                                   context.sendBroadcast(new Intent(FarmerContract.UPDATE_APPLICATION));
+                                    Log.d("tontracker", "Server sale update successful");
                                 }
 
                             } catch (JSONException e) {
@@ -142,10 +153,6 @@ public class TonTrackerNetworkMonitoring extends BroadcastReceiver {
                     });
                 }
             }
-
-
-
-
         }
     }
 }
