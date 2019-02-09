@@ -39,6 +39,7 @@ public class FarmerProfiles extends AppCompatActivity {
     private DrawerLayout mydrawer;
     private Integer buyer_id;
     private Integer company_id;
+    private Double current_price;
     SQLBuyerdatabasehelper sqlBuyerdatabasehelper;
     SQLiteDatabase sqLiteDatabase;
 
@@ -47,7 +48,10 @@ public class FarmerProfiles extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_farmer_profiles);
-
+        sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
+        sqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
+        current_price = 0.0;
+        updateUI();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,13 +63,13 @@ public class FarmerProfiles extends AppCompatActivity {
        // farmerModels = getFarmers();
         final PersistentCookieStore myCookieData = new PersistentCookieStore(this);
         farmersOutput = new ArrayList<>();
-        readFromLocalDeviceDatabase();
         buyer_id = 1;
         company_id = 1;
-        farmerListAdapter = new FarmerListAdapter(this, farmersOutput, 2.0, buyer_id, company_id);
+        readFromLocalDeviceDatabase();
+
+
+        farmerListAdapter = new FarmerListAdapter(this, farmersOutput, current_price, buyer_id, company_id);
         farmer_list.setAdapter(farmerListAdapter);
-        sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
-        sqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
 
 
 
@@ -118,7 +122,7 @@ public class FarmerProfiles extends AppCompatActivity {
                 return false;
             }
         });
-        updateUI();
+
     }
 
 
@@ -206,16 +210,17 @@ public class FarmerProfiles extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.dashboard_navigation);
         View view = navigationView.getHeaderView(0);
         TextView buyer_name  = view.findViewById(R.id.buyername);
-
+       // Double current_price = 0.0;
         Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
         String buyerName = "";
 
         if (buyerCursor.moveToFirst()){
             buyerName =  buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_FIRST_NAME));
             buyerName += " " + buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_LAST_NAME));
+            current_price = buyerCursor.getDouble(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_CURRENT_PRICE));
         }
 
         buyer_name.setText(buyerName);
-
+      //  return current_price;
     }
 }
