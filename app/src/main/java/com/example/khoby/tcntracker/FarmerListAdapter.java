@@ -44,6 +44,8 @@ import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 
+import static com.example.khoby.tcntracker.MainActivity.temporaryModalDisplay;
+
 public class FarmerListAdapter extends BaseAdapter {
 
     private Context context;
@@ -239,6 +241,7 @@ public class FarmerListAdapter extends BaseAdapter {
                                 String serverResponse = response.getString("response");
                                 if(serverResponse.equals("SUCCESSFUL")){
                                     sqlSaledatabasehelper.populateSaleTable(sale_vales, FarmerContract.SYNC_STATUS_SUCCESS,sqLiteDatabase);
+
                                     Log.d("tontracker", "successfully created a sale");
                                 }
                             } catch (JSONException e) {
@@ -260,10 +263,13 @@ public class FarmerListAdapter extends BaseAdapter {
                             Log.d("tontracker", responseString);
                         }
                     });
+                    temporaryModalDisplay(context, "Successfully created a sale", "Server response");
+
 
                 }else{
                     sqlSaledatabasehelper.populateSaleTable(sale_vales, FarmerContract.SYNC_STATUS_FAILED,sqLiteDatabase);
-                    Log.d("tontracker", "successfully created a sale offline");
+                    temporaryModalDisplay(context, "Successfully created sale offline", "Device response");
+                    Log.d("tontracker", "Successfully created a sale offline");
                 }
 
                 dialog.dismiss();

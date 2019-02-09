@@ -10,10 +10,10 @@ public class FarmerContract {
     public static final String BUYER_DATABASE_NAME = "buyerdatabse";
     public static final String SALE_DATABASE_NAME = "saledatabse";
 
-    public static  final String LOGIN_URL = "http://192.168.100.7:8000/loginfrommobile";
-    public static final String REGISTER_FARMER_URL = "http://192.168.100.7:8000/registerFarmerFromMobile";
-    public static final String LOCATION_URL = "http://192.168.100.7:8000/communities";
-    public static final  String TRANSACTIONS_URL = "http://192.168.100.7:8000/farmertransactions";
+    public static  final String LOGIN_URL = "http://tontracker.com/loginfrommobile";
+    public static final String REGISTER_FARMER_URL = "http://tontracker.com/registerFarmerFromMobile";
+    public static final String LOCATION_URL = "http://tontracker.com/communities";
+    public static final  String TRANSACTIONS_URL = "http://tontracker.com/farmertransactions";
     public static  final String UPDATE_APPLICATION = "com.example.tcntracker.updateapplication";
 
     private  FarmerContract(){ }

@@ -1,18 +1,23 @@
 package com.example.khoby.tcntracker;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -24,6 +29,7 @@ import com.example.khoby.tcntracker.Database.SQLBuyerdatabasehelper;
 import com.example.khoby.tcntracker.Database.SQLDatabasehelper;
 import com.example.khoby.tcntracker.Database.SQLSaledatabasehelper;
 import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkMonitoring;
+import com.example.khoby.tcntracker.NetworkFiles.TonTrackerNetworkService;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -85,21 +91,33 @@ public class MainActivity extends AppCompatActivity {
         if (myCookieData.getCookies().isEmpty()){
 
         loginButton.setOnClickListener(new View.OnClickListener(){
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
             @Override
             public void onClick(View v) {
                 String userEmail = buyerEmail.getText().toString();
                 String userPassword = buyerPassword.getText().toString();
+                Boolean isNetworkAvailable = TonTrackerNetworkService.isNetworkConnectionAvailable(MainActivity.this);
+
+
+
 
                 if (userEmail.isEmpty() && userPassword.isEmpty()){
-                    Toast.makeText(MainActivity.this, "Login credentials needed!!!", Toast.LENGTH_LONG).show();
+                    temporaryModalDisplay(MainActivity.this, "Login credentials needed!!!", "Email and password");
+//                    Toast.makeText(MainActivity.this, "Login credentials needed!!!", Toast.LENGTH_LONG).show();
                     return;
                 } else if (userEmail.isEmpty() || userPassword.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Both fields are mandatory!!!", Toast.LENGTH_LONG).show();
+                    temporaryModalDisplay(MainActivity.this, "Both fields are mandatory!!!", "Email or password");
+//                    Toast.makeText(MainActivity.this, "Both fields are mandatory!!!", Toast.LENGTH_LONG).show();
                     return;
                 } else{
 //                    Boolean checkValidEmail = isValidEmail(userEmail);
                     if (!isValidEmail(userEmail)){
-                        Toast.makeText(MainActivity.this, "wrong email format ", Toast.LENGTH_LONG).show();
+                        temporaryModalDisplay(MainActivity.this, "Wrong email format ", "Bad email format");
+//                        Toast.makeText(MainActivity.this, "wrong email format ", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    if(!isNetworkAvailable){
+                        temporaryModalDisplay(MainActivity.this, "Check network connectivity", "No network found");
                         return;
                     }
 
@@ -134,12 +152,19 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                             super.onFailure(statusCode, headers, responseString, throwable);
-
+                            temporaryModalDisplay(MainActivity.this, "Log in failed due to " + statusCode, "Authentication failed");
                             Log.d("tontracker", " status code " + statusCode + "r " + responseString);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            super.onFailure(statusCode, headers, throwable, errorResponse);
+                            temporaryModalDisplay(MainActivity.this, "Error encountered from sever " + statusCode, "Server response");
+
                         }
                     });
 
-                    Toast.makeText(MainActivity.this, "You clicked me ", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(MainActivity.this, "You clicked me ", Toast.LENGTH_LONG).show();
 
                 }
 
@@ -210,6 +235,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public static void temporaryModalDisplay(Context context,String message, String title){
 
+        AlertDialog.Builder diplayAlertModal;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            diplayAlertModal = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            diplayAlertModal = new AlertDialog.Builder(context);
+        }
+        Float elevation = 0.2F;
+
+        diplayAlertModal
+                .setMessage(message).setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("tontracker", "heyyy");
+            }
+        }).create();
+        AlertDialog alertDialog = diplayAlertModal.create();
+//        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.dashboardbackground);
+//      alertDialog.getWindow().setElevation(elevation);
+        alertDialog.getWindow().setTitle(title);
+//      alertDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.show();
+    }
 
 }

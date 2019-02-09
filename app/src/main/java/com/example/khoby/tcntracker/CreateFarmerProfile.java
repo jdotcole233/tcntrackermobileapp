@@ -43,6 +43,8 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.cookie.Cookie;
 
+import static com.example.khoby.tcntracker.MainActivity.temporaryModalDisplay;
+
 public class CreateFarmerProfile extends AppCompatActivity {
 
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
@@ -409,6 +411,8 @@ public class CreateFarmerProfile extends AppCompatActivity {
                         String responseFromServer = response.getString("response");
                         if(responseFromServer.equals("SUCCESSFUL")){
                             saveDataToDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_SUCCESS);
+                            temporaryModalDisplay(CreateFarmerProfile.this, "Saved to the server and local database", "Server response");
+
                             Log.d("tontracker", "Saved to the server and local database");
                         }
 
@@ -422,6 +426,7 @@ public class CreateFarmerProfile extends AppCompatActivity {
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     saveDataToDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_FAILED);
+                    temporaryModalDisplay(CreateFarmerProfile.this, "Error encountered, but data has been saved to local device", "Server response");
                     Log.d("tontracker", "Error encountered, but data has been saved to local device");
                 }
 
@@ -433,6 +438,7 @@ public class CreateFarmerProfile extends AppCompatActivity {
             });
         } else {
             saveDataToDeviceDatabase(farmerdata, FarmerContract.SYNC_STATUS_FAILED);
+            temporaryModalDisplay(CreateFarmerProfile.this, "Data has been saved to local device", "Device response");
         }
     }
 
