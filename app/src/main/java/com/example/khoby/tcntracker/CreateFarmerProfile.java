@@ -388,19 +388,19 @@ public class CreateFarmerProfile extends AppCompatActivity {
         if (isConnectionAvailable){
 
             AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-            RequestParams requestParams = new RequestParams();
+//            RequestParams requestParams = new RequestParams();
+//
+//            requestParams.add("first_name", farmerdata.get("first_name"));
+//            requestParams.add("other_name", farmerdata.get("other_name"));
+//            requestParams.add("last_name", farmerdata.get("last_name"));
+//            requestParams.add("gender", farmerdata.get("gender"));
+//            requestParams.add("phone_number", farmerdata.get("phone_number"));
+//            requestParams.add("buyer_id", buyer_id);
+//            requestParams.add("community_id", farmerdata.get("community_id"));
+//            requestParams.add("company_id", company_id);
+//            requestParams.add("created_at", farmerdata.get("created_at"));
 
-            requestParams.add("first_name", farmerdata.get("first_name"));
-            requestParams.add("other_name", farmerdata.get("other_name"));
-            requestParams.add("last_name", farmerdata.get("last_name"));
-            requestParams.add("gender", farmerdata.get("gender"));
-            requestParams.add("phone_number", farmerdata.get("phone_number"));
-            requestParams.add("buyer_id", buyer_id);
-            requestParams.add("community_id", farmerdata.get("community_id"));
-            requestParams.add("company_id", company_id);
-            requestParams.add("created_at", farmerdata.get("created_at"));
-
-            asyncHttpClient.post(FarmerContract.REGISTER_FARMER_URL, requestParams, new JsonHttpResponseHandler(){
+            asyncHttpClient.post(FarmerContract.REGISTER_FARMER_URL, new RequestParams(farmerdata), new JsonHttpResponseHandler(){
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

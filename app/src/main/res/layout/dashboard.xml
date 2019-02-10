@@ -20,14 +20,12 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/design_default_color_primary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:titleMarginStart="130dp"
-            app:titleTextColor="@android:color/background_light" >
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:foregroundGravity="center"
-                android:src="@drawable/tcntrackerpng"
-                />
+            app:titleTextColor="@android:color/background_light"
+            app:title="Dashboard"
+            android:gravity="center"
+            app:titleMarginStart="75dp"
+            >
+
         </android.support.v7.widget.Toolbar>
         <LinearLayout
             android:id="@+id/dateandconnectivitydisplay"
@@ -330,21 +328,22 @@
                     <TextView
                         android:id="@+id/total_produce"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="90dp"
                         android:fontFamily="@font/hind_semibold"
                         android:text="54"
+                        android:gravity="center"
                         android:textAlignment="center"
                         android:textColor="#32325d"
-                        android:textSize="54sp"
+                        android:textSize="32dp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/total_produce_trans"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:text="KILO(S)"
                         android:textAlignment="center"
-                        android:textSize="24sp"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -400,12 +399,13 @@
                     <TextView
                         android:id="@+id/clouduploadcount"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="90dp"
                         android:fontFamily="@font/hind_semibold"
                         android:text="54"
+                        android:gravity="center"
                         android:textAlignment="center"
                         android:textColor="#32325d"
-                        android:textSize="54sp"
+                        android:textSize="34sp"
                         android:textStyle="bold" />
 
                     <TextView

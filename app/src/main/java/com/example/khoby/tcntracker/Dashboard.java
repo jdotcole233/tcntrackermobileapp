@@ -144,6 +144,8 @@ public class Dashboard extends AppCompatActivity {
                             Log.d("tontracker", "After clear" + myCookieData.getCookies().toString());
                             Intent switchBack = new Intent(Dashboard.this, MainActivity.class);
                             startActivity(switchBack);
+                            sqlBuyerdatabasehelper.close();
+                            sqLiteDatabase.close();
                             finish();
                         }
                         break;
@@ -239,7 +241,6 @@ public class Dashboard extends AppCompatActivity {
         }
 
 
-
     }
 
 
@@ -264,6 +265,7 @@ public class Dashboard extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         unregisterReceiver(tonTrackerNetworkMonitoring);
+
     }
 
 
@@ -295,5 +297,6 @@ public class Dashboard extends AppCompatActivity {
         total_farmers.setText(totalFamers.toString());
         unsynchronize.setText(totalUnsync.toString());
         buyer_name.setText(buyerName);
+        cursor.close();
     }
 }

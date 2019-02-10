@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="192dp"
     android:background="#29303c"
-    android:gravity="bottom"
-    android:orientation="vertical"
+    android:gravity="center"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:id="@+id/headerView"
@@ -14,9 +13,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        tools:srcCompat="@drawable/tcntrackerpng" />
+        tools:srcCompat="@drawable/tcntrackerpng"
+
+        />
 
     <TextView
         android:id="@+id/buyername"

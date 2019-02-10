@@ -56,7 +56,6 @@ public class FarmerListAdapter extends BaseAdapter {
     private  Integer companyID;
     private  String phone_number;
     AsyncHttpClient asyncHttpClient;
-    RequestParams requestParams;
 
     public FarmerListAdapter(FarmerProfiles context, ArrayList<FarmerModel> farmers, Double current_price, Integer buyerID, Integer companyID) {
         this.context = context;
@@ -65,7 +64,6 @@ public class FarmerListAdapter extends BaseAdapter {
         this.buyerID = buyerID;
         this.companyID = companyID;
         asyncHttpClient = new AsyncHttpClient();
-        requestParams = new RequestParams();
         inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
 
     }
@@ -193,6 +191,8 @@ public class FarmerListAdapter extends BaseAdapter {
                         amount[0] = Double.parseDouble(sale_input.getText().toString());
                         Double calulate_amount = current_price * Double.parseDouble(sale_input.getText().toString());
                         sale_output.setText("GHC " + calulate_amount);
+                    } else if (sale_input.getText().length() == 0){
+                        sale_output.setText("GHC ");
                     }
                     Log.d("tontracker", "" + sale_input.getText());
                 }
@@ -223,15 +223,15 @@ public class FarmerListAdapter extends BaseAdapter {
                 if (TonTrackerNetworkService.isNetworkConnectionAvailable(context.getApplicationContext())){
 
 
-                    requestParams.add("company_id", sale_vales.get("company_id"));
-                    requestParams.add("buyer_id",sale_vales.get("buyer_id"));
-                    requestParams.add("unit_price", sale_vales.get("unit_price"));
-                    requestParams.add("total_amount_paid", sale_vales.get("total_amount_paid"));
-                    requestParams.add("phone_number",sale_vales.get("phone_number"));
-                    requestParams.add("total_weight",sale_vales.get("total_weight"));
-                    requestParams.add("created_at",sale_vales.get("created_at"));
+//                    requestParams.add("company_id", sale_vales.get("company_id"));
+//                    requestParams.add("buyer_id",sale_vales.get("buyer_id"));
+//                    requestParams.add("unit_price", sale_vales.get("unit_price"));
+//                    requestParams.add("total_amount_paid", sale_vales.get("total_amount_paid"));
+//                    requestParams.add("phone_number",sale_vales.get("phone_number"));
+//                    requestParams.add("total_weight",sale_vales.get("total_weight"));
+//                    requestParams.add("created_at",sale_vales.get("created_at"));
 
-                    asyncHttpClient.post(FarmerContract.TRANSACTIONS_URL, requestParams, new JsonHttpResponseHandler(){
+                    asyncHttpClient.post(FarmerContract.TRANSACTIONS_URL, new RequestParams(sale_vales), new JsonHttpResponseHandler(){
 
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -280,12 +280,12 @@ public class FarmerListAdapter extends BaseAdapter {
             }
         });
 
-        view.findViewById(R.id.cancel_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+//        view.findViewById(R.id.cancel_btn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
 
     }
 

@@ -19,9 +19,9 @@
         android:id="@+id/sale_display_amount"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="GHC 34"
+        android:text="GHC 00"
         android:gravity="center"
-        android:textSize="45dp"
+        android:textSize="30dp"
         android:textFontWeight="bold"
         android:fontFamily="sans-serif"
         android:textColor="#FF00"
@@ -49,23 +49,13 @@
     >
 
     <Button
-        android:id="@+id/cancel_btn"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_weight="1"
-        android:background="@drawable/circleintrobackground"
-        android:text="Cancel"
-        android:fontFamily="sans-serif"
-        android:textColor="@android:color/background_light"
-        android:textSize="18sp"
-        />
-
-    <Button
         android:id="@+id/submit_btn"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_weight="1"
         android:text="Submit"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/circleintrobackground"
         android:fontFamily="sans-serif"
         android:textColor="@android:color/background_light"

@@ -20,18 +20,21 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/design_default_color_primary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:title="Register Farmer"
-            app:titleMarginStart="110dp"
+            app:title="Farmers"
+            app:titleMarginStart="75dp"
             app:titleTextColor="@android:color/background_light">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tcntrackerpng"
-                android:foregroundGravity="center"
-                />
 
         </android.support.v7.widget.Toolbar>
+
+        <EditText
+            android:id="@+id/searchfilter"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:hint="Search farmer"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         <ListView
             android:id="@+id/farmer_list"

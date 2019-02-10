@@ -20,135 +20,143 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/design_default_color_primary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:title="Register Farmer"
-            app:titleMarginStart="110dp"
+            app:title="Register farmer"
+            app:titleMarginStart="75dp"
             app:titleTextColor="@android:color/background_light">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tcntrackerpng"
-                android:foregroundGravity="center"
-                />
 
         </android.support.v7.widget.Toolbar>
 
-        <EditText
-            android:id="@+id/first_name"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:ems="10"
-            android:hint="First Name"
-            android:background="@drawable/forminputbackground"
-            android:elevation="2dp"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/ic_person_black_24dp"
-            android:drawablePadding="15dp"
-            android:inputType="textPersonName"
-            android:padding="20dp" />
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="10dp"
+                >
 
-        <EditText
-            android:id="@+id/other_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:ems="10"
-            android:hint="Other Name"
-            android:background="@drawable/forminputbackground"
-            android:elevation="2dp"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/ic_person_black_24dp"
-            android:drawablePadding="15dp"
-            android:inputType="textPersonName"
-            android:padding="20dp" />
+                <EditText
+                    android:id="@+id/first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:ems="10"
+                    android:hint="First Name"
+                    android:background="@drawable/forminputbackground"
+                    android:elevation="2dp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:drawablePadding="15dp"
+                    android:inputType="textPersonName"
+                    android:padding="20dp" />
 
-        <EditText
-            android:id="@+id/last_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:ems="10"
-            android:hint="Last Name"
-            android:background="@drawable/forminputbackground"
-            android:elevation="2dp"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/ic_person_black_24dp"
-            android:drawablePadding="15dp"
-            android:inputType="textPersonName"
-            android:padding="20dp" />
+                <EditText
+                    android:id="@+id/other_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:ems="10"
+                    android:hint="Other Name"
+                    android:background="@drawable/forminputbackground"
+                    android:elevation="2dp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:drawablePadding="15dp"
+                    android:inputType="textPersonName"
+                    android:padding="20dp" />
 
-        <Spinner
-            android:id="@+id/genderspinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:ems="10"
-            android:hint="Gender"
-            android:background="@drawable/forminputbackground"
-            android:elevation="2dp"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/ic_lock_black_24dp"
-            android:drawablePadding="15dp"
-            android:inputType="textPersonName"
-            android:padding="20dp" />
+                <EditText
+                    android:id="@+id/last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:ems="10"
+                    android:hint="Last Name"
+                    android:background="@drawable/forminputbackground"
+                    android:elevation="2dp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:drawablePadding="15dp"
+                    android:inputType="textPersonName"
+                    android:padding="20dp" />
 
-        <EditText
-            android:id="@+id/phone_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:ems="10"
-            android:hint="Phone Number"
-            android:background="@drawable/forminputbackground"
-            android:elevation="2dp"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/ic_phone_black_24dp"
-            android:drawablePadding="15dp"
-            android:inputType="textPersonName"
-            android:padding="20dp" />
+                <Spinner
+                    android:id="@+id/genderspinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:ems="10"
+                    android:hint="Gender"
+                    android:background="@drawable/forminputbackground"
+                    android:elevation="2dp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_lock_black_24dp"
+                    android:drawablePadding="15dp"
+                    android:inputType="textPersonName"
+                    android:padding="20dp" />
 
-        <Spinner
-            android:id="@+id/locationspinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/forminputbackground"
-            android:drawableLeft="@drawable/ic_lock_black_24dp"
-            android:drawablePadding="15dp"
-            android:elevation="2dp"
-            android:ems="10"
-            android:hint="Location"
-            android:inputType="textPersonName"
-            android:padding="20dp"
-            android:spinnerMode="dialog" />
+                <EditText
+                    android:id="@+id/phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/forminputbackground"
+                    android:drawableLeft="@drawable/ic_phone_black_24dp"
+                    android:drawablePadding="15dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:hint="Phone Number"
+                    android:inputType="phone"
+                    android:padding="20dp" />
 
-        <Button
-            android:id="@+id/register_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/circleintrobackground"
-            android:text="Submit"
-            android:elevation="3dp"
-            android:textColor="@android:color/background_light"
-            android:textSize="19sp"
- />
+                <Spinner
+                    android:id="@+id/locationspinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/forminputbackground"
+                    android:drawableLeft="@drawable/ic_lock_black_24dp"
+                    android:drawablePadding="15dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:hint="Location"
+                    android:inputType="textPersonName"
+                    android:padding="20dp"
+                    android:spinnerMode="dialog" />
+
+                <Button
+                    android:id="@+id/register_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/circleintrobackground"
+                    android:text="Submit"
+                    android:elevation="3dp"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="19sp"
+                    />
+            </LinearLayout>
+
+        </ScrollView>
+
 
     </LinearLayout>
 

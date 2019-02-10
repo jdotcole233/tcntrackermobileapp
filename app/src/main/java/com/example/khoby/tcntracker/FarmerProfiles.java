@@ -14,9 +14,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,6 +39,7 @@ public class FarmerProfiles extends AppCompatActivity {
     private ArrayList<FarmerModel> farmerModels;
     private FarmerListAdapter farmerListAdapter;
     private ArrayList<FarmerModel> farmersOutput;
+    private EditText filterSearch;
     private DrawerLayout mydrawer;
     private Integer buyer_id;
     private Integer company_id;
@@ -50,8 +54,7 @@ public class FarmerProfiles extends AppCompatActivity {
         setContentView(R.layout.activity_farmer_profiles);
         sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(this);
         sqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
-        current_price = 0.0;
-        updateUI();
+        current_price = updateUI();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,6 +63,7 @@ public class FarmerProfiles extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         farmer_list = findViewById(R.id.farmer_list);
+        filterSearch = findViewById(R.id.searchfilter);
        // farmerModels = getFarmers();
         final PersistentCookieStore myCookieData = new PersistentCookieStore(this);
         farmersOutput = new ArrayList<>();
@@ -70,8 +74,6 @@ public class FarmerProfiles extends AppCompatActivity {
 
         farmerListAdapter = new FarmerListAdapter(this, farmersOutput, current_price, buyer_id, company_id);
         farmer_list.setAdapter(farmerListAdapter);
-
-
 
 
         mydrawer = findViewById(R.id.navigation_drawer);
@@ -122,6 +124,7 @@ public class FarmerProfiles extends AppCompatActivity {
                 return false;
             }
         });
+
 
     }
 
@@ -190,6 +193,9 @@ public class FarmerProfiles extends AppCompatActivity {
                 farmersOutput.add(new FarmerModel(count_id, fullName, farmerLocation, farmerPhone, FarmerContract.SYNC_STATUS_SUCCESS));
             }
         }
+        sqlBuyerdatabasehelper.close();
+        sqlDatabasehelper.close();
+        sqLiteDatabase.close();
         cursor.close();
         buyerCursor.close();
 
@@ -206,11 +212,11 @@ public class FarmerProfiles extends AppCompatActivity {
     }
 
 
-    public void updateUI(){
+    public Double updateUI(){
         NavigationView navigationView = findViewById(R.id.dashboard_navigation);
         View view = navigationView.getHeaderView(0);
         TextView buyer_name  = view.findViewById(R.id.buyername);
-       // Double current_price = 0.0;
+        Double current_price = 0.0;
         Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
         String buyerName = "";
 
@@ -221,6 +227,6 @@ public class FarmerProfiles extends AppCompatActivity {
         }
 
         buyer_name.setText(buyerName);
-      //  return current_price;
+        return current_price;
     }
 }

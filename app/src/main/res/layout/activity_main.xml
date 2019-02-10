@@ -20,7 +20,7 @@
     <EditText
         android:id="@+id/buyeremail"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="22dp"
@@ -28,25 +28,29 @@
         android:layout_marginBottom="296dp"
         android:drawableLeft="@drawable/ic_email_black_24dp"
         android:drawablePadding="15dp"
+        android:elevation="8dp"
         android:ems="10"
         android:hint="Email"
-        android:elevation="8dp"
-        android:inputType="textNoSuggestions|textEmailAddress" />
+        android:inputType="textNoSuggestions|textEmailAddress"
+        android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/background_light" />
 
     <EditText
         android:id="@+id/buyerpassword"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="225dp"
         android:drawableLeft="@drawable/ic_lock_black_24dp"
         android:drawablePadding="15dp"
+        android:elevation="8dp"
         android:ems="10"
         android:hint="Password"
-        android:elevation="8dp"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/background_light" />
 
     <Button
         android:id="@+id/loginbutton"
