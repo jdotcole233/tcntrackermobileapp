@@ -140,11 +140,7 @@ public class FarmerListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Log.i("Clicked", farmers.get(position).getFarmer_phone());
 
-                if (ActivityCompat.checkSelfPermission(context,
-                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
-                    makePhonecall("0503848404");
-                }
+                makePhonecall(farmers.get(position).getFarmer_phone());
 
             }
         });
@@ -186,7 +182,8 @@ public class FarmerListAdapter extends BaseAdapter {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if(event.getAction() == KeyEvent.ACTION_UP){
+                if(event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.ACTION_UP ){
+
                     if(sale_input.getText().length() > 0){
                         amount[0] = Double.parseDouble(sale_input.getText().toString());
                         Double calulate_amount = current_price * Double.parseDouble(sale_input.getText().toString());
@@ -194,8 +191,7 @@ public class FarmerListAdapter extends BaseAdapter {
                     } else if (sale_input.getText().length() == 0){
                         sale_output.setText("GHC ");
                     }
-                    Log.d("tontracker", "" + sale_input.getText());
-                }
+                    }
 
                 return false;
             }
@@ -206,6 +202,10 @@ public class FarmerListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 final SQLSaledatabasehelper sqlSaledatabasehelper = new SQLSaledatabasehelper(context);
                 final SQLiteDatabase sqLiteDatabase = sqlSaledatabasehelper.getWritableDatabase();
+
+                if (sale_input.getText().length() == 0){
+                    return;
+                }
 
                 Date date = new Date();
                 long time = date.getTime();
@@ -292,6 +292,11 @@ public class FarmerListAdapter extends BaseAdapter {
     public void makePhonecall(String phonenumber){
         Intent makephonecall = new Intent(Intent.ACTION_DIAL);
         makephonecall.setData(Uri.parse("tel:" + phonenumber));
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
+            return;
+        }
         context.startActivity(makephonecall);
 
     }

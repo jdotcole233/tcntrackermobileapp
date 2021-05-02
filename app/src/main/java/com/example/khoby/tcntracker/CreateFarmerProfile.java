@@ -182,6 +182,16 @@ public class CreateFarmerProfile extends AppCompatActivity {
                     Date date = new Date();
                     long time = date.getTime();
                     Timestamp timestamp = new Timestamp(time);
+                    Cursor cursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
+                    String buyer_id = null;
+                    String company_id = null;
+
+
+                    if (cursor.moveToFirst()){
+                        buyer_id = cursor.getString(cursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID));
+                        company_id = cursor.getString(cursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID));
+                    }
+
 
                     //Check if the device is not in airplane mode, or there is an active internet connection
                     collectedData.put("first_name", first_name.getText().toString());
@@ -191,12 +201,15 @@ public class CreateFarmerProfile extends AppCompatActivity {
                     collectedData.put("phone_number", phone_number.getText().toString());
                     collectedData.put("community_id", String.valueOf(selectedLocationID));
                     collectedData.put("community_name", selectedLocation);
+                    collectedData.put("company_id", company_id);
+                    collectedData.put("buyer_id", buyer_id);
                     collectedData.put("created_at", String.valueOf(timestamp));
 //                    saveDataToDeviceDatabase(collectedData);
                     saveDataToServerDatabase(collectedData);
                     clearFromInputs();
                     Log.d("tontracker", "properly filled");
                 }
+
             }
         });
 
@@ -372,17 +385,6 @@ public class CreateFarmerProfile extends AppCompatActivity {
     public void saveDataToServerDatabase(final HashMap<String, String> farmerdata){
 
         boolean isConnectionAvailable = TonTrackerNetworkService.isNetworkConnectionAvailable(this);
-
-
-        Cursor cursor = sqlBuyerdatabasehelper.readBuyerDataLocally(sqLiteDatabase);
-        String buyer_id = null;
-        String company_id = null;
-
-
-        while (cursor.moveToNext()){
-            buyer_id = cursor.getString(cursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID));
-            company_id = cursor.getString(cursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID));
-        }
 
 
         if (isConnectionAvailable){

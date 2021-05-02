@@ -33,7 +33,7 @@ public class TonTrackerNetworkMonitoring extends BroadcastReceiver {
 
             final SQLDatabasehelper sqlDatabasehelper = new SQLDatabasehelper(context);
             final  SQLBuyerdatabasehelper sqlBuyerdatabasehelper = new SQLBuyerdatabasehelper(context);
-            final SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getWritableDatabase();
+            final SQLiteDatabase sqLiteDatabase = sqlDatabasehelper.getReadableDatabase();
             final SQLiteDatabase buyersqLiteDatabase = sqlBuyerdatabasehelper.getReadableDatabase();
             final SQLSaledatabasehelper sqlSaledatabasehelper = new SQLSaledatabasehelper(context);
             final SQLiteDatabase salesdatabase = sqlSaledatabasehelper.getWritableDatabase();
@@ -48,27 +48,39 @@ public class TonTrackerNetworkMonitoring extends BroadcastReceiver {
             Cursor cursor = sqlDatabasehelper.readFromDeviceDatabase(sqLiteDatabase);
             Cursor buyerCursor = sqlBuyerdatabasehelper.readBuyerDataLocally(buyersqLiteDatabase);
 
-//            String checkTableExists = "SELECT * FROM sqlite_master WHERE name= 'farmer_transactions' and type='table'";
-//            SQLiteStatement table = sqLiteDatabase.compileStatement(checkTableExists);
-//            Long count = table.simpleQueryForLong();
-          //  Log.d("tontracker", "table size" + count);
+            String company_id = "";
+            String buyer_id = "";
+
+            if (buyerCursor.moveToFirst()){
+                buyer_id = buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID));
+                company_id  = buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID));
+            }
 
 
-
-            while (cursor.moveToNext() && buyerCursor.moveToFirst()){
+            while (cursor.moveToNext()){
                 int sync_status = cursor.getInt(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_SYNC_STATUS));
 
 
                 if (sync_status == FarmerContract.SYNC_STATUS_FAILED){
+
+                    Log.d("tontracker", "sync first name : " + cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_FIRST_NAME)));
+                    Log.d("tontracker", "sync other name : " + cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_OTHER_NAME)) );
+                    Log.d("tontracker", "sync last name : " + cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_LAST_NAME)));
+                    Log.d("tontracker", "sync gender : " + cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_GENDER)));
+                    Log.d("tontracker", "sync phone number : " + cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_PHONE_NUMBER)));
+                    Log.d("tontracker", "sync buyer id : " + buyer_id);
+                    Log.d("tontracker", "sync community id : " + String.valueOf(cursor.getInt(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_ID))));
+                    Log.d("tontracker", "sync company id : " + company_id);
+                    Log.d("tontracker", "sync created at : " + cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_CREATED_AT)));
 
                     requestParams.add("first_name", cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_FIRST_NAME)));
                     requestParams.add("other_name", cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_OTHER_NAME)));
                     requestParams.add("last_name", cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_LAST_NAME)));
                     requestParams.add("gender", cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_GENDER)));
                     requestParams.add("phone_number", cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_PHONE_NUMBER)));
-                    requestParams.add("buyer_id", buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_BUYER_ID)));
+                    requestParams.add("buyer_id", buyer_id);
                     requestParams.add("community_id", String.valueOf(cursor.getInt(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_COMMUNITY_ID))));
-                    requestParams.add("company_id", buyerCursor.getString(buyerCursor.getColumnIndex(FarmerContract.BuyerDatabaseEntry.COLUMN_NAME_COMMPANY_ID)));
+                    requestParams.add("company_id", company_id);
                     requestParams.add("created_at", cursor.getString(cursor.getColumnIndex(FarmerContract.FarmerDatabaseEntry.COLUMN_NAME_CREATED_AT)));
 
 
